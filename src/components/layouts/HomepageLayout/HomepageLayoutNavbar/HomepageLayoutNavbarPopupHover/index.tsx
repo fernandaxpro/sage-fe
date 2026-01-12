@@ -1,0 +1,3 @@
+import HomepageLayoutNavbarPopupHover from "./HomepageLayoutPopupHover";
+
+export default HomepageLayoutNavbarPopupHover
