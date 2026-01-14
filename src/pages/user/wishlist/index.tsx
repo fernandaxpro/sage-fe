@@ -1,5 +1,5 @@
 import HomepageLayout from "@/components/layouts/HomepageLayout";
-import Wishlist from "@/components/views/Wishlist";
+import Wishlist from "@/components/views/User/Wishlist";
 
 const WishlistPage = () => {
     return (

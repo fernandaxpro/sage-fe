@@ -10,7 +10,11 @@ import {
 } from "@heroui/react";
 import router from "next/router";
 import React from "react";
-import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa6";
+import { 
+    FaRegHeart, 
+    // FaHeart, 
+    // FaTrash 
+} from "react-icons/fa6";
 import { GoTrash } from "react-icons/go";
 import { IoCloseOutline } from "react-icons/io5";
 

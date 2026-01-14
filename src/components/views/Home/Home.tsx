@@ -18,7 +18,7 @@ const Home = () => {
   const {
     data: homeData,
     isLoading,
-    error,
+    // error,
   } = useAppSelector((state) => state.home);
 
   return (
@@ -26,21 +26,25 @@ const Home = () => {
       <HomeSlider data={homeData?.banners} isLoading={isLoadingHome} />
 
       <GridProducts
+        cardCount={1}
         data={homeData?.new_arrivals}
         title="Latest Products"
-        emptyMessage="No latest products found !"
         isLoading={isLoading}
+        cardCountSkeleton={6}
+        useCardLayout={true}
       />
 
-      {/* Best Sellers */}
       <GridProducts
+        cardCount={3}
+        title="Best Sellers"
+        cardCountSkeleton={3}
         data={homeData?.best_sellers}
         isLoading={isLoading}
         useCardLayout={true}
-        cardCount={3}
       />
 
       <GridProducts
+        cardCountSkeleton={8}
         data={homeData?.featured_products}
         title="Featured Products"
         isLoading={isLoading}

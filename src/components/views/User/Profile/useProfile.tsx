@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import userService from "@/services/user.service";
 import * as yup from "yup";
 import { useAppDispatch } from "@/store/hooks/hooks";
@@ -68,7 +69,7 @@ const useProfile = () => {
     formState: { errors },
     reset,
     setValue,
-    getValues,
+    // getValues,
     watch,
   } = useForm({
     resolver: yupResolver(profileSchema),
@@ -214,6 +215,7 @@ const useProfile = () => {
     triggerFileInput,
     isUploadingPicture,
     watch,
+    refetchProfile
   };
 };
 

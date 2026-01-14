@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  Button,
+  // Button,
   Divider,
   Image,
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
+  // ModalFooter,
+  // ModalHeader,
+  // useDisclosure,
 } from "@heroui/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -31,7 +32,7 @@ const CardProductModal = (props: PropTypes) => {
   return (
     <Modal isOpen={isOpen} size="5xl" onOpenChange={onClose}>
       <ModalContent>
-        {(onClose) => (
+        {() => (
           <ModalBody className="p-6">
             <div className="flex gap-6">
               <div className="w-[40%] flex-shrink-0">

@@ -15,8 +15,8 @@ import {
 } from "@heroui/react";
 import React from "react";
 import {
-  AUTH_BUTTONS,
-  NAV_LINKS,
+  // AUTH_BUTTONS,
+  // NAV_LINKS,
   USER_ACTION_BUTTONS,
 } from "../HomepageLayout.constants";
 import Link from "next/link";
@@ -31,9 +31,11 @@ import HomepageLayoutMobileSidebar from "./HomepageLayoutMobileSidebar";
 import HomepageLayoutMobileLoginDrawer from "./HomepageLayoutMobileLoginDrawer";
 import { signOut, useSession } from "next-auth/react";
 import { Search } from "lucide-react";
+import { useRouter } from "next/router";
 
 const HomepageLayoutNavbar = () => {
   const { data: session, status } = useSession();
+  const router = useRouter();
   const {
     dataProfile,
 
@@ -47,6 +49,7 @@ const HomepageLayoutNavbar = () => {
     isMobileLoginOpen,
     handleMobileLoginToggle,
   } = useHomepageLayoutNavbar({ session, status });
+  const currentPath = router.pathname;
 
   return (
     <header>
@@ -114,7 +117,7 @@ const HomepageLayoutNavbar = () => {
             </Button>
           </NavbarContent>
 
-          <NavbarBrand as={Link} href="/">
+          <NavbarBrand>
             {/* <Image
               src="/images/general/logo.png"
               alt="logo"
@@ -122,7 +125,13 @@ const HomepageLayoutNavbar = () => {
               height={75}
               className="cursor-pointer w-[120px] h-[30px] md:w-[220px] md:h-[55px] lg:w-[280px] lg:h-[65px] xl:w-[316px] xl:h-[75px] max-w-full object-contain"
             /> */}
-            <h1 className="text-3xl font-bold text-primary">Sage Gaming</h1>
+            <Link href="/" className="flex items-center">
+              <div className="cursor-pointer">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">
+                  Sage Gaming
+                </h1>
+              </div>
+            </Link>
           </NavbarBrand>
 
           <NavbarContent
@@ -172,9 +181,11 @@ const HomepageLayoutNavbar = () => {
                             />
                           </DropdownTrigger>
                           <DropdownMenu>
-                            <DropdownItem key="profile" href="/profile">
-                              Profile
-                            </DropdownItem>
+                            {currentPath !== '/user/profile' ? (
+                              <DropdownItem key="profile" href="/user/profile">
+                                Profile
+                              </DropdownItem>
+                            ): null}
                             <DropdownItem
                               key="signout"
                               onPress={() => signOut({ callbackUrl: "/" })}

@@ -25,6 +25,7 @@ const AppShell = (props: PropTypes) => {
         return() => {
             clearTimeout(timeout)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toaster])
 
     return (

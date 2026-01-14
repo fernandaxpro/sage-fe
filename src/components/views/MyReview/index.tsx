@@ -2,7 +2,7 @@
 
 import { Input, Image, Select, SelectItem, Avatar } from "@heroui/react";
 import Container from "@/components/ui/Container";
-import UserSidebar from "@/components/views/User/UserSidebar";
+import UserSidebar from "@/components/views/User/UserSidebar/UserSidebar";
 import { FaSearch, FaStar } from "react-icons/fa";
 
 import { dummyUser } from "@/data/users";

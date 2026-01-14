@@ -9,11 +9,11 @@ interface UserSidebarProps {
 
 const UserSidebar = ({ activeItem }: UserSidebarProps) => {
     const sidebarItems = [
-        { label: "My Profile", icon: <FaUser />, href: "/profile" },
+        { label: "My Profile", icon: <FaUser />, href: "/user/profile" },
         { label: "My Orders", icon: <FaShoppingCart />, href: "/product/my-order" },
-        { label: "My Wishlist", icon: <FaHeart />, href: "/product/wishlist" },
+        { label: "My Wishlist", icon: <FaHeart />, href: "/user/wishlist" },
         { label: "My Reviews", icon: <FaCommentAlt />, href: "/product/my-review" },
-        { label: "My Addresses", icon: <FaMapMarkerAlt />, href: "/product/my-address" },
+        { label: "My Addresses", icon: <FaMapMarkerAlt />, href: "/user/address" },
         { label: "Trade Account", icon: <FaFileAlt />, href: "/trade-account" },
         { label: "Logout", icon: <FaSignOutAlt />, href: "/auth/logout" },
     ];

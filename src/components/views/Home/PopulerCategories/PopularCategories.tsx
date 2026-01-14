@@ -1,6 +1,12 @@
 import React from "react";
 import Container from "@/components/ui/Container";
-import { Button, Card, CardBody, CardHeader, Image } from "@heroui/react";
+import { 
+  Button, 
+  Card, 
+  CardBody, 
+  // CardHeader, 
+  Image 
+} from "@heroui/react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";

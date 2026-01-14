@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Input, Tab, Tabs } from '@heroui/react'
+import { Button, Input, Tab, Tabs } from '@heroui/react'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import Link from "next/link";

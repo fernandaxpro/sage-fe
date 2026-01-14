@@ -30,12 +30,13 @@ const EmptyStateCard: React.FC<EmptyStateCardProps> = ({
   const skeletonArray = Array.from({ length: count }, (_, i) => i);
 
   return (
-    <div className={`flex flex-row gap-4 w-full ${className}`}>
+    <div className={`flex flex-row w-full ${className}`}>
       {skeletonArray.map((index) => (
         <Card
           key={index}
           className={`flex-1 py-12 px-6 ${cardClassName}`}
           shadow="none"
+          radius="none"
         >
           <div className="flex flex-col items-center justify-center text-center h-full">
             {showSkeleton ? (
@@ -48,7 +49,7 @@ const EmptyStateCard: React.FC<EmptyStateCardProps> = ({
               <>
                 <div className={`mb-3 ${iconClassName}`}>
                   {icon || (
-                    <CiImageOff className="w-12 h-12 md:w-16 md:h-16 text-gray-400" />
+                    <CiImageOff className="w-12 h-12 md:w-16 md:h-16 text-primary" />
                   )}
                 </div>
 

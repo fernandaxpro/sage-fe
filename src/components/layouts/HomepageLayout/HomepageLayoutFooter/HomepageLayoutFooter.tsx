@@ -1,8 +1,11 @@
 // import Image from "next/image";
 import { FaBagShopping, FaWallet } from "react-icons/fa6";
-import { FOOTER_INFO, FOOTER_MENUS } from "./HomepageLayoutFooter.constants";
+import { 
+  // FOOTER_INFO, 
+  FOOTER_MENUS 
+} from "./HomepageLayoutFooter.constants";
 import { FaShippingFast } from "react-icons/fa";
-import Image from "next/image";
+// import Image from "next/image";
 import { useSession } from "next-auth/react";
 
 const HomepageLayoutFooter = () => {

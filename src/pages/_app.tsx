@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { ToasterProvider } from "@/contexts/ToasterContext";
 import ReduxProvider from "@/store/provider";
+import AppShell from "@/components/commons/AppShell";
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const queryClient = new QueryClient({
@@ -31,7 +32,9 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
         <ReduxProvider>
           <HeroUIProvider>
             <ToasterProvider>
-              <Component {...pageProps} />
+              <AppShell>
+                <Component {...pageProps} />
+              </AppShell>
             </ToasterProvider>
           </HeroUIProvider>
         </ReduxProvider>

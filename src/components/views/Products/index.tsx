@@ -1,20 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
-import { Checkbox, Slider, Image, Pagination, Button } from "@heroui/react";
+import { Checkbox, Slider, Image, Pagination, Button, Breadcrumbs, BreadcrumbItem } from "@heroui/react";
 import { FaStar, FaGlobe, FaStore, FaTruck, FaThLarge, FaList, FaFilter, FaTimes } from "react-icons/fa";
 import { FaBagShopping } from "react-icons/fa6";
 import Container from "@/components/ui/Container";
 import Link from "next/link";
 
 import { dummyProducts, brands, ratingCounts } from "@/data/products";
-import { Product } from "@/types";
+// import { Product } from "@/types";
+import { useRouter } from "next/router";
 
 const bestSellerProducts = dummyProducts.slice(0, 4);
 
-interface ProductCardProps extends Product { }
+// interface ProductCardProps extends Product {
+//     id?: number | string;
+//     title: string;
+//     img: string;
+//     price: string;
+//     rating: number;
+//     onSale?: boolean
+//  }
 
-const ProductCard = ({ id, title, img, price, rating, onSale }: ProductCardProps) => {
+const ProductCard = ({ id, title, img, price, rating, onSale }: any) => {
     return (
         <Link href={`/product/list/detail/${id}`} className="block">
             <div className="bg-white border border-[#E4E4E4] rounded-lg p-3 sm:p-4 flex flex-col justify-between hover:shadow-md transition-shadow relative cursor-pointer">
@@ -209,7 +218,7 @@ const ProductList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [showAllBrands, setShowAllBrands] = useState(false);
     const [showMobileFilter, setShowMobileFilter] = useState(false);
-
+    const router = useRouter();
     const visibleBrands = showAllBrands ? brands : brands.slice(0, 8);
 
     const handleBrandChange = (brand: string, checked: boolean) => {
@@ -247,11 +256,14 @@ const ProductList = () => {
 
             <Container className="flex-col gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-6 lg:px-8">
                 {/* Breadcrumb */}
-                <div className="text-xs sm:text-sm text-gray-500">
-                    <span className="text-gray-400 cursor-pointer hover:text-primary">Home</span>
-                    <span className="mx-2">&gt;</span>
-                    <span className="text-primary">Product</span>
-                </div>
+                <Breadcrumbs className="text-xs sm:text-sm text-gray-500">
+                    <BreadcrumbItem onClick={() => router.push('/')} className="text-gray-400 cursor-pointer hover:text-primary">
+                        Home
+                    </BreadcrumbItem>
+                    <BreadcrumbItem className="text-gray-400 cursor-pointer hover:text-primary">
+                        Product
+                    </BreadcrumbItem>
+                </Breadcrumbs>
 
                 {/* Page Title & Mobile Filter Button */}
                 <div className="flex items-center justify-between">

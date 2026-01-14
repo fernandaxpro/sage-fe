@@ -41,7 +41,7 @@ const Wishlist = () => {
                             variant="light"
                             className="text-[22px] font-semibold"
                         >
-                            Delete
+                            Delete Woi
                         </Button>
                     </div>
 

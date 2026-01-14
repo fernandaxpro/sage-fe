@@ -27,6 +27,7 @@ const BestSeller = () => {
               price={item.price}
               rating={item.rating}
               onSale={item.onSale}
+              data={item}
             />
           ))}
         </div>

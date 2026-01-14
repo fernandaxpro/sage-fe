@@ -23,8 +23,6 @@ const useProductDetail = () => {
     enabled: !!productSlug,
   });
 
-  console.log("zzz bro", productData);
-
   return {
     productData,
     isLoadingProduct,

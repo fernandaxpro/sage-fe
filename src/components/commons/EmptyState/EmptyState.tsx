@@ -13,7 +13,7 @@ interface EmptyStateProps {
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({
-  message = "No Data Found!",
+  message,
   description,
   icon,
   className = "",
@@ -22,13 +22,13 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   descriptionClassName = "",
 }) => {
   return (
-    <Card shadow="none" className={`w-full py-12 px-6 ${className}`}>
+    <Card shadow="none" radius="none" className={`w-full py-12 px-6 ${className}`}>
       <div className="flex flex-col items-center justify-center text-center">
         {/* Icon */}
         <div className={`mb-4 ${iconClassName}`}>
           {icon || (
             <CiImageOff 
-              className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 text-gray-400" 
+              className="w-12 h-12 md:w-16 md:h-16 text-primary" 
             />
           )}
         </div>

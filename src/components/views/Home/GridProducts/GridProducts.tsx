@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Container from "@/components/ui/Container";
 import CardProduct from "@/components/ui/CardProduct";
 import EmptyState from "@/components/commons/EmptyState";
 import EmptyStateCard from "@/components/commons/EmptyStateCard/EmptyStateCard";
+import CardProductSkeleton from "@/components/ui/CardProduct/CardProductSkeleton";
 // import { dummyProducts } from "@/data/products";
 
 interface PropTypes {
@@ -12,6 +14,7 @@ interface PropTypes {
   isLoading?: boolean;
   useCardLayout?: boolean;
   cardCount?: number;
+  cardCountSkeleton?: number;
   cardClassName?: string;
   isOvelayButton?: boolean;
 }
@@ -24,12 +27,11 @@ const GridProducts = ({
   isLoading,
   useCardLayout = false,
   cardCount = 3,
+  cardCountSkeleton,
   cardClassName,
   isOvelayButton,
 }: PropTypes) => {
   const isEmpty = !data || data.length === 0;
-
-  console.log("zzz mantap", data);
 
   return (
     <Container>
@@ -41,7 +43,7 @@ const GridProducts = ({
         )}
 
         {isLoading ? (
-          <EmptyStateCard count={cardCount} showSkeleton={true} />
+          <CardProductSkeleton count={cardCountSkeleton} />
         ) : isEmpty ? (
           useCardLayout ? (
             <EmptyStateCard
@@ -59,7 +61,7 @@ const GridProducts = ({
           )
         ) : (
           <div
-            className={`grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] ${cardClassName}`}
+             className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 ${cardClassName}`}
           >
             {data?.map((item: any) => (
               <CardProduct
@@ -69,7 +71,7 @@ const GridProducts = ({
                 title={item.name}
                 img={item.images?.[0]?.url}
                 price={item.recommended_retail_price}
-                rating={item.brand_id}
+                rating={5}
                 onSale={item.new_arrival}
                 isOvelayButton={isOvelayButton}
                 data={item}

@@ -13,9 +13,20 @@ const instance = axios.create({
   timeout: 60 * 1000,
 });
 
+// instance.interceptors.request.use(
+//   async (request) => {
+//     const session: SessionExtended | null = await getSession();
+//     if (session && session.access_token) {
+//       request.headers.Authorization = `Bearer ${session.access_token}`;
+//     }
+//     return request;
+//   },
+//   (error) => Promise.reject(error)
+// );
+
 instance.interceptors.request.use(
   async (request) => {
-    const session: SessionExtended | null = await getSession();
+    const session = await getSession() as SessionExtended | null;
     if (session && session.access_token) {
       request.headers.Authorization = `Bearer ${session.access_token}`;
     }

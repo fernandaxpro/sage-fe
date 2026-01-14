@@ -14,7 +14,6 @@ interface PropTypes {
 
 const HomeSlider = (props: PropTypes) => {
   const { data, isLoading } = props;
-  console.log("zzz data banner", data);
 
   return (
     <div className="max-w-standard w-full mx-auto h-[319px] md:h-[638px] relative">

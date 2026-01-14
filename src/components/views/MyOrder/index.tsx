@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button, Image, Tabs, Tab } from "@heroui/react";
 import Container from "@/components/ui/Container";
-import UserSidebar from "@/components/views/User/UserSidebar";
+import UserSidebar from "@/components/views/User/UserSidebar/UserSidebar";
 import RateReviewModal from "./RateReviewModal";
 
 import { dummyUser } from "@/data/users";

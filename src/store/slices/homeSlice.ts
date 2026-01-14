@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/store/slices/homeSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -74,7 +75,7 @@ export interface Product {
   modified_by_id: number;
   updated_at: string;
   brand: Brand | null;
-  category: unknown | null;
+  category: any | null;
   images: ProductImage[];
 }
 
@@ -111,14 +112,14 @@ export interface HomeData {
   status: boolean;
   configs: Config[];
   categories: Category[];
-  banners: unknown[];
-  blogs: unknown[];
-  hot_deals: unknown[];
-  best_sellers: unknown[];
-  new_arrivals: unknown[];
-  brands: unknown[];
+  banners: any[];
+  blogs: any[];
+  hot_deals: any[];
+  best_sellers: any[];
+  new_arrivals: any[];
+  brands: any[];
   featured_products: Product[];
-  pages: unknown[];
+  pages: any[];
 }
 
 interface HomeState {

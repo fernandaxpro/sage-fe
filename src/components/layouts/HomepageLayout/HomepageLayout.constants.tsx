@@ -1,5 +1,3 @@
-import { FaRegHeart, FaRegUser } from "react-icons/fa";
-import { MdOutlineShoppingCart } from "react-icons/md";
 import { TbArrowRightToArc } from "react-icons/tb";
 import { Heart, ShoppingCart, User } from "lucide-react";
 
@@ -34,7 +32,7 @@ const AUTH_BUTTONS = [
 const USER_ACTION_BUTTONS = [
   {
     label: "Account",
-    href: "/product/profile",
+    href: "/user/profile",
     variant: "light",
     isAuthBtn: true,
     icon: <User />,

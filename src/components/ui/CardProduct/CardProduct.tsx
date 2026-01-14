@@ -23,11 +23,12 @@ interface PropTypes {
   rating: number;
   onSale?: boolean;
   isOvelayButton?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
 }
 
 const CardProduct = ({
-  id,
+  // id,
   slug,
   title,
   img,
@@ -74,7 +75,7 @@ const CardProduct = ({
             />
 
             {!img && (
-              <CiImageOff className="absolute w-16 h-16 text-gray-400" />
+              <CiImageOff className="absolute w-12 h-12 text-primary" />
             )}
 
             {isOvelayButton && (
@@ -111,8 +112,8 @@ const CardProduct = ({
             )}
           </CardBody>
 
-          <CardFooter className="flex flex-col items-start gap-3 p-0">
-            <p className="text-black text-sm font-medium line-clamp-2 h-[40px] leading-snug">
+          <CardFooter className="flex flex-col items-start p-0">
+            <p className="text-black text-sm font-medium line-clamp-2 mb-4">
               {title}
             </p>
 

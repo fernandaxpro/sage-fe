@@ -1,5 +1,5 @@
 import HomepageLayout from "@/components/layouts/HomepageLayout";
-import Profile from "@/components/views/Profile";
+import Profile from "@/components/views/User/Profile";
 
 const ProfilePage = () => {
     return (

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button, Input, Select, SelectItem, Checkbox, Textarea } from "@heroui/react";
 import Container from "@/components/ui/Container";
-import UserSidebar from "@/components/views/User/UserSidebar";
+import UserSidebar from "@/components/views/User/UserSidebar/UserSidebar";
 import { FaCheck } from "react-icons/fa";
 
 const steps = [
