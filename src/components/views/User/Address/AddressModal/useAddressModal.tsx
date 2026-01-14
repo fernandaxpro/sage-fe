@@ -6,20 +6,23 @@ import { IAddressPayload, IBillingAddress, IShippingAddress } from '@/types/Prof
 import { useSession } from 'next-auth/react';
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { ToasterContext } from "@/contexts/ToasterContext";
 
 interface PropTypes {
-  type: "shipping" | "billing";
+  type: string;
   refetchProfile: () => void;
   initialData: any;
+  onClose: () => void;
+  setMode: React.Dispatch<React.SetStateAction<string>>
+  setType: React.Dispatch<React.SetStateAction<string>>
 }
 
-const addressSchema = yup.object().shape({
+const addressSchema: yup.ObjectSchema<IAddressPayload> = yup.object().shape({
   person: yup.string().required("Person is required"),
   company: yup.string().required("Company is required"),
   address: yup.string().required("Address is required"),
-  address2: yup.string().required("Address 2 is required"),
+  address2: yup.string().optional(),
   country_id: yup.mixed<string | number>().required("Country is required"),
   city_id: yup.mixed<string | number>().required("City is required"),
   state_id: yup.mixed<string | number>().required("State is required"),
@@ -27,15 +30,33 @@ const addressSchema = yup.object().shape({
   post_code: yup.mixed<string>().required("Post code is required"),
 });
 
-const useAddressModal = ({ 
-  type, 
-  refetchProfile, 
-  // initialData 
+const useAddressModal = ({
+  type,
+  refetchProfile,
+  initialData,
+  onClose,
+  setMode,
+  setType
 }: PropTypes) => {
   const { data } = useSession();
   const user: any = data?.user || null;
   const { setToaster } = useContext(ToasterContext);
-  
+
+  const prevCountryRef = useRef<string | number>("");
+  const prevStateRef = useRef<string | number>("");
+
+  const defaultValues = {
+  person: "",
+  company: "",
+  address: "",
+  address2: "", 
+  country_id: "",
+  city_id: "",
+  state_id: "",
+  suburb: "",
+  post_code: "",
+};
+
   const {
     control,
     handleSubmit,
@@ -46,14 +67,51 @@ const useAddressModal = ({
     watch,
   } = useForm<IAddressPayload>({
     resolver: yupResolver(addressSchema),
-    defaultValues: {},
+    defaultValues: defaultValues,
   });
 
+  const watchCountry = watch('country_id');
+  const watchState = watch('state_id');
+
+  useEffect(() => {
+    if (initialData && Object.keys(initialData).length > 0) {
+      reset({
+        person: initialData.person || "",
+        company: initialData.company || "",
+        address: initialData.address || "",
+        address2: initialData.address2 || "",
+        country_id: initialData.country_id || "",
+        state_id: initialData.state_id || "",
+        city_id: initialData.city_id || "",
+        suburb: initialData.suburb || "",
+        post_code: String(initialData.post_code) || "",
+      });
+
+      prevCountryRef.current = initialData.country_id || "";
+      prevStateRef.current = initialData.state_id || "";
+    }
+  }, [initialData, reset]);
+
+  useEffect(() => {
+    if (watchCountry && prevCountryRef.current && watchCountry !== prevCountryRef.current) {
+      setValue('state_id', '');
+      setValue('city_id', '');
+    }
+    prevCountryRef.current = watchCountry;
+  }, [watchCountry, setValue]);
+
+  useEffect(() => {
+    if (watchState && prevStateRef.current && watchState !== prevStateRef.current) {
+      setValue('city_id', '');
+    }
+    prevStateRef.current = watchState;
+  }, [watchState, setValue]);
+
   const updateAddresById = async (addressData: IAddressPayload): Promise<any> => {
-    const payload: IBillingAddress | IShippingAddress = type === "billing" 
+    const payload: IBillingAddress | IShippingAddress = type === "billing"
       ? { billing_addresses: [addressData] }
       : { shipping_addresses: [addressData] };
-    
+
     const { data } = await userService.updateProfileById(payload, user?.id);
     return data?.data;
   };
@@ -69,7 +127,10 @@ const useAddressModal = ({
         message: "Update address success",
       });
       refetchProfile();
-      reset();
+      reset(defaultValues);
+      onClose();
+      setMode("")
+      setType("")
     },
     onError: () => {
       setToaster({
@@ -91,6 +152,9 @@ const useAddressModal = ({
     getValues,
     watch,
     reset,
+    watchCountry,
+    watchState,
+    defaultValues
   };
 };
 

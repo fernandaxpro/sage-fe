@@ -1,39 +1,82 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Checkbox, Select, SelectItem } from "@heroui/react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Autocomplete, AutocompleteItem, Spinner } from "@heroui/react";
 import useAddressModal from "./useAddressModal";
 import { Controller } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { GetCountries, GetState, GetCity } from "react-country-state-city";
 
 interface AddressModalProps {
     isOpen: boolean;
     onClose: () => void;
-    mode: "add" | "edit";
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mode: string;
+    setMode: React.Dispatch<React.SetStateAction<string>>
+    setType: React.Dispatch<React.SetStateAction<string>>
     initialData?: any;
-    type: 'billing' | 'shipping';
+    setInitial: React.Dispatch<React.SetStateAction<any>>
+    type: string;
     refetchProfile: () => void;
 }
 
-const AddressModal = ({ isOpen, onClose, mode, initialData, type, refetchProfile }: AddressModalProps) => {
+const AddressModal = ({ isOpen, onClose, mode, initialData, type, refetchProfile, setMode, setType, setInitial }: AddressModalProps) => {
     const {
         control,
         handleSubmit,
         errors,
         handleUpdateAddress,
-        isLoadingUpdateProfile,
-        setValue,
-        getValues,
-        watch,
+        watchCountry,
+        watchState,
         reset,
-    } = useAddressModal({ type, refetchProfile, initialData })
+        isLoadingUpdateProfile,
+        defaultValues,
+    } = useAddressModal({ type, refetchProfile, initialData, onClose, setMode, setType })
+
+    const [countriesList, setCountriesList] = useState<any[]>([]);
+    const [statesList, setStatesList] = useState<any[]>([]);
+    const [citiesList, setCitiesList] = useState<any[]>([]);
+
+    useEffect(() => {
+        GetCountries().then((result: any) => {
+            setCountriesList(result);
+        });
+    }, []);
+
+    useEffect(() => {
+        if (watchCountry) {
+            GetState(Number(watchCountry)).then((result: any) => {
+                setStatesList(result);
+            });
+        } else {
+            setStatesList([]);
+            setCitiesList([]);
+        }
+    }, [watchCountry]);
+
+    useEffect(() => {
+        if (watchCountry && watchState) {
+            GetCity(Number(watchCountry), Number(watchState)).then((result: any) => {
+                setCitiesList(result);
+            });
+        } else {
+            setCitiesList([]);
+        }
+    }, [watchCountry, watchState]);
+
+    const handleClose = () => {
+        reset(defaultValues);
+        onClose();
+        setMode("")
+        setType("")
+        setInitial(null)
+    };
 
     return (
         <Modal
             isOpen={isOpen}
-            onClose={onClose}
+            onClose={handleClose}
             size="2xl"
         >
             <ModalContent>
-                {(onClose) => (
+                {() => (
                     <form onSubmit={handleSubmit(handleUpdateAddress)}>
                         <ModalHeader>
                             <h1 className="text-xl font-bold">
@@ -94,54 +137,89 @@ const AddressModal = ({ isOpen, onClose, mode, initialData, type, refetchProfile
                                         name="country_id"
                                         control={control}
                                         render={({ field }) => (
-                                            <Select
-                                                {...field}
+                                            <Autocomplete
                                                 isRequired
                                                 label="Country"
                                                 labelPlacement="outside"
-                                                placeholder="Select country"
+                                                placeholder="Search or select country"
                                                 isInvalid={errors.country_id !== undefined}
                                                 errorMessage={errors.country_id?.message}
+                                                selectedKey={field.value ? String(field.value) : null}
+                                                onSelectionChange={(key) => {
+                                                    field.onChange(key ? String(key) : "");
+                                                }}
+                                                onClear={() => {
+                                                    field.onChange("");
+                                                }}
+                                                isClearable
+                                                allowsCustomValue={false}
                                             >
-                                                <SelectItem key="satu">Country 1</SelectItem>
-                                                <SelectItem key="dua">Country 2</SelectItem>
-                                            </Select>
+                                                {countriesList.map((country) => (
+                                                    <AutocompleteItem key={String(country.id)}>
+                                                        {country.name}
+                                                    </AutocompleteItem>
+                                                ))}
+                                            </Autocomplete>
                                         )}
                                     />
                                     <Controller
                                         name="state_id"
                                         control={control}
                                         render={({ field }) => (
-                                            <Select
-                                                {...field}
+                                            <Autocomplete
                                                 isRequired
                                                 label="State"
                                                 labelPlacement="outside"
-                                                placeholder="Select state"
+                                                placeholder="Search or select state"
                                                 isInvalid={errors.state_id !== undefined}
                                                 errorMessage={errors.state_id?.message}
+                                                isDisabled={!watchCountry || statesList.length === 0}
+                                                selectedKey={field.value ? String(field.value) : null}
+                                                onSelectionChange={(key) => {
+                                                    field.onChange(key ? String(key) : "");
+                                                }}
+                                                onClear={() => {
+                                                    field.onChange("");
+                                                }}
+                                                isClearable
+                                                allowsCustomValue={false}
                                             >
-                                                <SelectItem key="satu">State 1</SelectItem>
-                                                <SelectItem key="dua">State 2</SelectItem>
-                                            </Select>
+                                                {statesList.map((state) => (
+                                                    <AutocompleteItem key={String(state.id)}>
+                                                        {state.name}
+                                                    </AutocompleteItem>
+                                                ))}
+                                            </Autocomplete>
                                         )}
                                     />
                                     <Controller
                                         name="city_id"
                                         control={control}
                                         render={({ field }) => (
-                                            <Select
-                                                {...field}
+                                            <Autocomplete
                                                 isRequired
                                                 label="City"
                                                 labelPlacement="outside"
-                                                placeholder="Select city"
+                                                placeholder="Search or select city"
                                                 isInvalid={errors.city_id !== undefined}
                                                 errorMessage={errors.city_id?.message}
+                                                isDisabled={!watchState || citiesList.length === 0}
+                                                selectedKey={field.value ? String(field.value) : null}
+                                                onSelectionChange={(key) => {
+                                                    field.onChange(key ? String(key) : "");
+                                                }}
+                                                onClear={() => {
+                                                    field.onChange("");
+                                                }}
+                                                isClearable
+                                                allowsCustomValue={false}
                                             >
-                                                <SelectItem key="satu">City 1</SelectItem>
-                                                <SelectItem key="dua">City 2</SelectItem>
-                                            </Select>
+                                                {citiesList.map((city) => (
+                                                    <AutocompleteItem key={String(city.id)}>
+                                                        {city.name}
+                                                    </AutocompleteItem>
+                                                ))}
+                                            </Autocomplete>
                                         )}
                                     />
                                 </div>
@@ -182,17 +260,18 @@ const AddressModal = ({ isOpen, onClose, mode, initialData, type, refetchProfile
                         <ModalFooter>
                             <Button
                                 className="bg-secondary text-primary px-8 font-medium w-full sm:w-auto"
-                                radius="full"
-                                onPress={onClose}
+                                onPress={handleClose}
+                                disabled={isLoadingUpdateProfile}
                             >
                                 Cancel
                             </Button>
                             <Button
                                 className="bg-primary text-secondary px-8 font-medium w-full sm:w-auto"
-                                radius="full"
                                 type="submit"
                             >
-                                {mode === "add" ? "Submit" : "Save"}
+                                {isLoadingUpdateProfile ? (
+                                    <Spinner color="white" size="sm" />
+                                ) : ( mode === "add" ? "Submit" : "Save" )}
                             </Button>
                         </ModalFooter>
                     </form>

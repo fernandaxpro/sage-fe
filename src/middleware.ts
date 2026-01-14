@@ -12,7 +12,8 @@ export async function middleware(request: NextRequest) {
     
     const { pathname } = request.nextUrl;
     
-    const protectedRoutes = ["/user/profile", "/product/wishlist"];
+    // const protectedRoutes = ["/user/profile", "/user/wishlist"];
+    const protectedRoutes = ["/user"];
     const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
     
     const authRoutes = ["/auth/login", "/auth/register"];
@@ -34,7 +35,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
     matcher: [
         "/auth/:path*", 
-        "/user/profile/:path*",
-        "/product/wishlist/:path*",
+        "/user/:path*",
     ]
 }

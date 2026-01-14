@@ -9,19 +9,20 @@ import { FaSearch, FaPlus } from "react-icons/fa";
 import AddressModal from "./AddressModal/AddressModal";
 // import { dummyUser } from "@/data/users";
 import useAddress from "./useAddress";
+import AddressSkeleton from "./AddressSkeleton";
 
 const Address = () => {
     const {
         profileData,
-        // isLoadingProfile,
-        // error,
+        isLoadingProfile,
         refetchProfile,
+        // error,
     } = useAddress()
 
     // const initialAddresses = dummyUser.addresses;
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalMode, setModalMode] = useState<"add" | "edit">("add");
-    const [type, setType] = useState<"shipping" | "billing">('shipping')
+    const [modalMode, setModalMode] = useState("");
+    const [type, setType] = useState("")
     const [selectedAddress, setSelectedAddress] = useState<any>(null);
 
     const handleAddAddress = (type: 'shipping' | 'billing') => {
@@ -38,11 +39,13 @@ const Address = () => {
         setType(type)
     };
 
-    console.log('zzz profile data', profileData);
-
     const formatAddress = (...parts: (string | number | null | undefined)[]) => {
         return parts.filter(Boolean).join(', ');
     };
+
+    if (isLoadingProfile || !profileData) {
+        return <AddressSkeleton />;
+    }
 
     return (
         <Container className="flex-col md:flex-row gap-8 py-8 px-4 sm:px-6 lg:px-8">
@@ -180,8 +183,11 @@ const Address = () => {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 mode={modalMode}
+                setMode={setModalMode}
                 initialData={selectedAddress}
+                setInitial={setSelectedAddress}
                 type={type}
+                setType={setType}
                 refetchProfile={refetchProfile}
             />
         </Container>

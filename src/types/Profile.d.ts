@@ -12,7 +12,7 @@ interface IAddressPayload {
     person: string;
     company: string;
     address: string;
-    address2: string;
+    address2?: string;
     country_id: string | number;
     city_id: string | number;
     state_id: string | number;
