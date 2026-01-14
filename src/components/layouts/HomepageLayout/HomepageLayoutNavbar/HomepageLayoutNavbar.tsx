@@ -227,10 +227,9 @@ const HomepageLayoutNavbar = () => {
                   </>
                 ) : (
                   <Badge
-                    color="warning"
                     content={0}
                     shape="circle"
-                    className="text-white text-xs md:text-sm px-[4px] py-[2px] md:px-[6px] md:py-[3px]"
+                    className="text-secondary bg-primary text-xs md:text-sm px-[4px] py-[2px] md:px-[6px] md:py-[3px]"
                   >
                     {item.label === "Cart" ? (
                       <ShoppingCart

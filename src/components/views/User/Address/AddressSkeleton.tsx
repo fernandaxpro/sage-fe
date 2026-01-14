@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Skeleton, Divider } from "@heroui/react";
 import Container from "@/components/ui/Container";
 import UserSidebar from "@/components/views/User/UserSidebar/UserSidebar";

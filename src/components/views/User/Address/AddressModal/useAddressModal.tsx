@@ -14,6 +14,7 @@ interface PropTypes {
   refetchProfile: () => void;
   initialData: any;
   onClose: () => void;
+  mode: string;
   setMode: React.Dispatch<React.SetStateAction<string>>
   setType: React.Dispatch<React.SetStateAction<string>>
 }
@@ -36,7 +37,8 @@ const useAddressModal = ({
   initialData,
   onClose,
   setMode,
-  setType
+  setType,
+  mode
 }: PropTypes) => {
   const { data } = useSession();
   const user: any = data?.user || null;
@@ -46,16 +48,16 @@ const useAddressModal = ({
   const prevStateRef = useRef<string | number>("");
 
   const defaultValues = {
-  person: "",
-  company: "",
-  address: "",
-  address2: "", 
-  country_id: "",
-  city_id: "",
-  state_id: "",
-  suburb: "",
-  post_code: "",
-};
+    person: "",
+    company: "",
+    address: "",
+    address2: "",
+    country_id: "",
+    city_id: "",
+    state_id: "",
+    suburb: "",
+    post_code: "",
+  };
 
   const {
     control,
@@ -112,8 +114,13 @@ const useAddressModal = ({
       ? { billing_addresses: [addressData] }
       : { shipping_addresses: [addressData] };
 
-    const { data } = await userService.updateProfileById(payload, user?.id);
-    return data?.data;
+    if (mode === 'add') {
+      const { data } = await userService.postProfile(payload);
+      return data?.data;
+    } else {
+      const { data } = await userService.updateProfileById(payload, user?.id);
+      return data?.data;
+    }
   };
 
   const {

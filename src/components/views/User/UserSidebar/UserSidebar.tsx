@@ -2,7 +2,7 @@
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { JSX } from "react";
-import { FaUser, FaShoppingCart, FaHeart, FaCommentAlt, FaMapMarkerAlt, FaFileAlt, FaSignOutAlt } from "react-icons/fa";
+import { FaUser, FaHeart, FaMapMarkerAlt, FaSignOutAlt } from "react-icons/fa";
 
 interface UserSidebarProps {
     activeItem: string;

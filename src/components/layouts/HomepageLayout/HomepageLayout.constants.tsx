@@ -35,15 +35,15 @@ const USER_ACTION_BUTTONS = [
     href: "/user/profile",
     variant: "light",
     isAuthBtn: true,
-    icon: <User />,
+    icon: <User className="text-success" />,
     showInMobile: true,
   },
   {
     label: "Wishlist",
-    href: "/product/wishlist",
+    href: "/user/wishlist",
     variant: "light",
     isAuthBtn: false,
-    icon: <Heart />,
+    icon: <Heart className="text-success" />,
     showInMobile: false,
   },
   {
@@ -51,7 +51,7 @@ const USER_ACTION_BUTTONS = [
     href: "/cart",
     variant: "light",
     isAuthBtn: false,
-    icon: <ShoppingCart />,
+    icon: <ShoppingCart className="text-success" />,
     showInMobile: true,
   },
 ];

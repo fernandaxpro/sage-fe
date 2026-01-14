@@ -19,13 +19,13 @@ const config: Config = {
       colors: {
         primary: "#103178",
         secondary: "#F0F2F5",
+        border: "#F2F2F2",
+        success: "#FF9923",
+        neutral: "#5B6C9D",
+        muted: "#F6F7E5",
         
         danger: "#E62727",
-        gray: "#707070",
         light: "#F5F5F5",
-        muted: "#D9D9D9",
-        neutral: "#F6F7E5",
-        success: "#008337",
         legendary: '#787878'
       },
       fontSize: {

@@ -248,17 +248,17 @@ const ProductDetail = ({ id }: { id: string }) => {
                 <Wallet className="h-6 text-primary font-semibold" />{" "}
                 <p className="text-primary font-semibold text-sm ml-2">100%</p>
               </span>
-              <p className="text-primary font-semibold text-sm">Money Back</p>
+              <p className="text-primary font-semibold text-sm">Money back</p>
             </div>
 
             <div className="flex flex-col">
               <span className="flex items-center">
                 <ShoppingBag className="h-6 text-primary font-semibold" />{" "}
                 <p className="text-primary font-semibold text-sm ml-2">
-                  No-Contact
+                  No-contact
                 </p>
               </span>
-              <p className="text-primary font-semibold text-sm">Shipping</p>
+              <p className="text-primary font-semibold text-sm">shipping</p>
             </div>
 
             <div className="flex flex-col">

@@ -13,6 +13,7 @@ interface EmptyStateCardProps {
   iconClassName?: string;
   textClassName?: string;
   descriptionClassName?: string;
+  isEmptyCardFullWidth?: boolean;
 }
 
 const EmptyStateCard: React.FC<EmptyStateCardProps> = ({
@@ -26,15 +27,22 @@ const EmptyStateCard: React.FC<EmptyStateCardProps> = ({
   iconClassName = "",
   textClassName = "",
   descriptionClassName = "",
+  isEmptyCardFullWidth = true,
 }) => {
   const skeletonArray = Array.from({ length: count }, (_, i) => i);
 
   return (
-    <div className={`flex flex-row w-full ${className}`}>
+    <div
+      className={`grid ${
+        isEmptyCardFullWidth
+          ? "grid-cols-1"
+          : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6"
+      } gap-0 w-full ${className}`}
+    >
       {skeletonArray.map((index) => (
         <Card
           key={index}
-          className={`flex-1 py-12 px-6 ${cardClassName}`}
+          className={`py-12 px-6 ${cardClassName}`}
           shadow="none"
           radius="none"
         >

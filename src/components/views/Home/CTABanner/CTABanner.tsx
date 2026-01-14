@@ -3,7 +3,7 @@ import Container from "@/components/ui/Container";
 const CTABanner = () => {
   return (
     <Container className="p-8">
-      <div className="bg-neutral w-full py-4 px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-10 md:gap-0 rounded-lg">
+      <div className="bg-muted w-full py-4 px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-10 md:gap-0 rounded-lg">
         <div className="flex items-center gap-4 md:gap-[29px]">
           <div className="w-10 h-10 md:w-12 md:h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
             <svg
@@ -29,13 +29,13 @@ const CTABanner = () => {
         </div>
 
         <div className="hidden md:block">
-          <p className="text-base lg:text-[25px] font-medium text-gray">
+          <p className="text-base lg:text-[25px] font-medium text-primary">
             Talk to us on WhatsApp! <br />{" "}
             <span className="font-bold">Open daily from 8 AM to 10 PM</span>{" "}
           </p>
         </div>
 
-        <button className="bg-success hover:bg-green-700 text-neutral px-6 md:px-[10px] py-3 md:py-[15px] w-full md:w-[143px] rounded-full font-semibold text-base md:text-[20px]">
+        <button className="bg-success hover:bg-green-500 text-secondary px-6 md:px-[10px] py-3 md:py-[15px] w-full md:w-[143px] rounded-full font-semibold text-base md:text-[20px]">
           Chat Now
         </button>
       </div>

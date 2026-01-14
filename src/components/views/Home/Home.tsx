@@ -4,6 +4,9 @@ import GridProducts from "./GridProducts";
 import ArticleSection from "./ArticleSection";
 import useHome from "./useHome";
 import { useAppSelector } from "@/store/hooks/hooks";
+import EmailSubscription from "./EmailSubscription";
+import CTABanner from "./CTABanner";
+import GridProductsSlider from "./GridProductSlider/GridProductSlider";
 
 // import FeatureHighlights from "./FeatureHighlights";
 // import PopularCategories from "./PopulerCategories";
@@ -21,27 +24,46 @@ const Home = () => {
     // error,
   } = useAppSelector((state) => state.home);
 
+  const dummyBanners = [
+    {
+      _id: "1",
+      title: "Banner",
+      image: "/images/banners/banner.jpg",
+    },
+    {
+      _id: "2",
+      title: "Banner",
+      image: "/images/banners/banner-sage.jpg",
+    },
+    {
+      _id: "3",
+      title: "Banner",
+      image: "/images/banners/banner-sage-2.jpg",
+    },
+  ];
+
   return (
     <>
-      <HomeSlider data={homeData?.banners} isLoading={isLoadingHome} />
+      <HomeSlider data={dummyBanners} isLoading={isLoadingHome} />
 
       <GridProducts
-        cardCount={1}
+        cardCountEmptyCard={1}
         data={homeData?.new_arrivals}
         title="Latest Products"
         isLoading={isLoading}
         cardCountSkeleton={6}
-        useCardLayout={true}
+        isEmptyCardFullWidth={false}
       />
 
-      <GridProducts
-        cardCount={3}
-        title="Best Sellers"
-        cardCountSkeleton={3}
-        data={homeData?.best_sellers}
+      <GridProductsSlider
+        data={homeData?.featured_products}
+        title="Bestseller Products"
         isLoading={isLoading}
-        useCardLayout={true}
+        emptyMessage="No featured products found !"
+        isOvelayButton={true}
       />
+
+      <CTABanner />
 
       <GridProducts
         cardCountSkeleton={8}
@@ -54,12 +76,12 @@ const Home = () => {
 
       <ArticleSection title="From Our Blog" />
 
+      <EmailSubscription />
+
       {/* <FeatureHighlights /> */}
-      {/* <CTABanner /> */}
       {/* <PopularCategories /> */}
       {/* <HotSale /> */}
       {/* <BestSeller /> */}
-      {/* <EmailSubscription /> */}
     </>
   );
 };

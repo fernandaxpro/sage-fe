@@ -10,8 +10,7 @@ const EmailSubscription = () => {
             Subscribe to Our Newsletter
           </h1>
           <p className="text-primary text-base md:text-xl lg:text-[30px] text-center font-medium px-4">
-            Subscribe to our newsletter & get <br className="hidden md:inline" /> notification about
-            discounts.
+            Join our newsletter and get <br className="hidden md:inline" /> $20 discount for your first order
           </p>
         </div>
 

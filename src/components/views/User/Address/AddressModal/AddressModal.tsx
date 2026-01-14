@@ -28,7 +28,7 @@ const AddressModal = ({ isOpen, onClose, mode, initialData, type, refetchProfile
         reset,
         isLoadingUpdateProfile,
         defaultValues,
-    } = useAddressModal({ type, refetchProfile, initialData, onClose, setMode, setType })
+    } = useAddressModal({ type, refetchProfile, initialData, onClose, setMode, setType, mode })
 
     const [countriesList, setCountriesList] = useState<any[]>([]);
     const [statesList, setStatesList] = useState<any[]>([]);

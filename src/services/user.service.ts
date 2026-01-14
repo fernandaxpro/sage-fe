@@ -6,6 +6,7 @@ import { IBillingAddress, IProfile, IShippingAddress } from "@/types/Profile";
 const userService = {
     getProfileById: (id: string) => instance.get(`${endpoint.ADMIN}/customer/${id}`),
     updateProfileById: (payload: IProfile | IShippingAddress | IBillingAddress, id: string) => instance.put(`${endpoint.ADMIN}/customer/${id}`, payload),
+    postProfile: (payload: IProfile | IShippingAddress | IBillingAddress) => instance.post(`${endpoint.ADMIN}/customer`, payload),
     uploadProfilePicture: (payload: FormData) => instance.post(`${endpoint.ADMIN}/catalogue/cdn/upload`, payload,{
         headers: {
             'Content-Type': 'multipart/form-data',
