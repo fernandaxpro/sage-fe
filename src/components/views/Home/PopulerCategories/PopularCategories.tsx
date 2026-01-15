@@ -1,104 +1,87 @@
-import React from "react";
+import React, { useRef } from "react";
 import Container from "@/components/ui/Container";
-import { 
-  Button, 
-  Card, 
-  CardBody, 
-  // CardHeader, 
-  Image 
-} from "@heroui/react";
+import { Button, Card, CardBody, Image } from "@heroui/react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import "swiper/css";
+import "swiper/css/navigation";
 import "swiper/css/pagination";
 
+interface Category {
+  id: number;
+  name: string;
+  url_slug: string;
+  url_logo: string;
+  meta_description: string;
+  page_description: string;
+  status: boolean;
+}
 
-// icon popular categories
-const PopularCategories = () => {
-  const popularCategories = [
-    {
-      id: 1,
-      title: "Access Control",
-      subtitle: "", // Subtitle/note seperti pada gambar
-      image: "/images/icon/access-control.png",
-      buttonText: "More",
-    },
-    {
-      id: 2,
-      title: "CCTV",
-      subtitle: "",
-      image: "/images/icon/cctv.png",
-      buttonText: "More",
-    },
-    {
-      id: 3,
-      title: "Networking",
-      subtitle: "",
-      image: "/images/icon/wlan.png",
-      buttonText: "More",
-    },
-    {
-      id: 4,
-      title: "Alarm",
-      subtitle: "",
-      image: "/images/icon/alarm.png", // Anda perlu menambahkan icon alarm
-      buttonText: "More",
-    },
-    {
-      id: 5,
-      title: "Automation",
-      subtitle: "",
-      image: "/images/icon/automation.png",
-      buttonText: "More",
-    },
-  ];
+interface PropTypes {
+  data: Category[];
+}
+
+const PopularCategories = ({ data }: PropTypes) => {
+  const swiperRef = useRef<SwiperType | null>(null);
+
+  const categoriesWithLogo =
+    data?.filter(
+      (item) => item.url_logo && item.url_logo.trim() !== "" && item.status
+    ) || [];
+
+  if (categoriesWithLogo.length === 0) {
+    return null;
+  }
 
   return (
     <Container>
       <div className="w-full py-10 md:py-16">
         {/* Title Section */}
-        <h1 className="text-center text-2xl md:text-4xl font-bold mb-12">
+        <h1 className="text-center text-2xl md:text-4xl font-bold mb-12 text-primary">
           Check out the most popular categories
         </h1>
 
-        {/* Grid Container */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-          {popularCategories.map((item) => (
+        {/* Grid Container - Desktop */}
+        <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          {categoriesWithLogo.map((item) => (
             <Card
+              shadow="none"
+              radius="none"
               key={item.id}
-              className="h-[280px] md:h-[320px] relative overflow-hidden group cursor-pointer transition-all duration-300 bg-[#EBF0F7]"
-              // isPressable
-              onPress={() => console.log(`Clicked ${item.title}`)}
+              className="h-[320px] md:h-[360px] relative overflow-hidden group cursor-pointer transition-all duration-300 bg-secondary"
+              onPress={() => console.log(`Clicked ${item.name}`)}
             >
               {/* Content */}
               <CardBody className="relative z-10 flex flex-col p-6 h-full">
                 {/* Top Section - Title and Subtitle */}
                 <div className="flex-1">
                   <h3 className="text-primary text-2xl md:text-3xl font-bold mb-2">
-                    {item.title}
+                    {item.name}
                   </h3>
                   <p className="text-gray-600 text-sm font-medium mb-4">
-                    {item.subtitle}
+                    {item.meta_description || "Explore this category"}
                   </p>
 
-                  {/* Button moved here */}
+                  {/* Button */}
                   <Button
                     className="bg-white hover:bg-gray-100 text-gray-800 text-sm font-semibold px-6 py-2 rounded-full transition-all duration-300 shadow-xs"
                     radius="full"
                     size="md"
                   >
-                    {item.buttonText}
+                    Explore
                   </Button>
                 </div>
 
-                {/* Bottom Section - Image/Icon */}
-                <div className={`absolute ${item.id !== 3 ? 'bottom-0 right-0 w-32 h-32 md:w-40 md:h-40' : 'bottom-0 right-[80px] w-40 h-40'} `}>
+                {/* Bottom Section - Image/Icon - POSISI DI TENGAH BAWAH */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-44 h-44 md:w-48 md:h-48 lg:w-44 lg:h-44 xl:w-48 xl:h-48 flex items-center justify-center">
                   <Image
-                    alt={item.title}
-                    className="w-full h-full object-contain align-items"
-                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-contain"
+                    src={item.url_logo}
                   />
                 </div>
               </CardBody>
@@ -109,13 +92,35 @@ const PopularCategories = () => {
           ))}
         </div>
 
-        {/* Responsive Note untuk Mobile */}
-        <div className="block hidden mt-8">
+        {/* Mobile Swiper Version with Navigation Buttons */}
+        <div className="block lg:hidden relative">
+          {/* Custom Navigation Buttons */}
+          <Button
+            isIconOnly
+            radius="full"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-primary text-white shadow-lg hover:scale-110 transition-transform disabled:opacity-50 w-12 h-12"
+            onClick={() => swiperRef.current?.slidePrev()}
+          >
+            <ChevronLeft size={24} />
+          </Button>
+
+          <Button
+            isIconOnly
+            radius="full"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 bg-primary text-white shadow-lg hover:scale-110 transition-transform disabled:opacity-50 w-12 h-12"
+            onClick={() => swiperRef.current?.slideNext()}
+          >
+            <ChevronRight size={24} />
+          </Button>
+
           <Swiper
+            onBeforeInit={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            modules={[Navigation, Pagination]}
             slidesPerView={1.2}
             spaceBetween={20}
             pagination={{ clickable: true }}
-            modules={[Pagination]}
             className="popularCategoriesSwiper"
             breakpoints={{
               640: {
@@ -128,31 +133,32 @@ const PopularCategories = () => {
               },
             }}
           >
-            {popularCategories.map((item) => (
+            {categoriesWithLogo.map((item) => (
               <SwiperSlide key={item.id}>
-                <Card className="h-[280px] relative overflow-hidden group cursor-pointer bg-[#EBF0F7]">
+                <Card className="h-[320px] relative overflow-hidden group cursor-pointer bg-secondary">
                   <CardBody className="relative z-10 flex flex-col p-6 h-full">
                     <div className="flex-1">
                       <h3 className="text-primary text-2xl font-bold mb-2">
-                        {item.title}
+                        {item.name}
                       </h3>
                       <p className="text-gray-600 text-sm font-medium mb-4">
-                        {item.subtitle}
+                        {item.meta_description || "Explore this category"}
                       </p>
                       <Button
                         className="bg-white text-gray-800 text-sm font-semibold px-5 py-2 rounded-full shadow-xs"
                         radius="full"
                         size="sm"
                       >
-                        {item.buttonText}
+                        Explore
                       </Button>
                     </div>
 
-                    <div className="absolute bottom-0 right-0 w-28 h-28">
+                    {/* Image diperbesar dan di tengah untuk mobile juga */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-40 h-40 sm:w-44 sm:h-44 flex items-center justify-center">
                       <Image
-                        alt={item.title}
-                        className="w-full h-full object-contain object-bottom-right"
-                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-contain"
+                        src={item.url_logo}
                       />
                     </div>
                   </CardBody>

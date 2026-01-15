@@ -1,28 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { useState } from "react";
-import {
-  Image,
-  Breadcrumbs,
-  BreadcrumbItem,
-} from "@heroui/react";
-import {
-  FaStar,
-  FaGlobe,
-  FaStore,
-  FaTruck,
-  FaHeart,
-} from "react-icons/fa";
+import { useState, useRef } from "react";
+import { Image, Breadcrumbs, BreadcrumbItem } from "@heroui/react";
+import { FaStar, FaGlobe, FaStore, FaTruck, FaHeart } from "react-icons/fa";
 import { FaBagShopping } from "react-icons/fa6";
 import Container from "@/components/ui/Container";
 import useProductDetail from "./useProductDetail";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import TabsProductDetail from "./TabsProductDetail";
-import { ShoppingBag, Truck, Wallet } from "lucide-react";
+import {
+  ShoppingBag,
+  Truck,
+  Wallet,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import ProductDetailSkeleton from "./ProductDetailSkeleton";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Thumbs } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
 
 const relatedProduct = {
   id: 2,
@@ -36,18 +39,9 @@ const ProductDetail = ({ id }: { id: string }) => {
   const { status } = useSession();
   const router = useRouter();
   const [selectedImage, setSelectedImage] = useState(0);
+  const swiperRef = useRef<SwiperType | null>(null);
 
-  // const [quantity, setQuantity] = useState(1);
-  // const [selectedTab, setSelectedTab] = useState("description");
-  // const handleQuantityChange = (delta: number) => {
-  //   setQuantity(Math.max(1, quantity + delta));
-  // };
-
-  const { 
-    productData, 
-    isLoadingProduct, 
-  } =
-    useProductDetail();
+  const { productData, isLoadingProduct } = useProductDetail();
 
   if (isLoadingProduct || !productData) {
     return <ProductDetailSkeleton />;
@@ -56,14 +50,20 @@ const ProductDetail = ({ id }: { id: string }) => {
   return (
     <Container className="flex-col gap-6 lg:gap-8 px-4 sm:px-6 lg:px-8 py-6">
       <Breadcrumbs className="text-xs sm:text-sm text-gray-500">
-        <BreadcrumbItem onClick={() => router.push('/')} className="text-gray-400 cursor-pointer hover:text-primary">
+        <BreadcrumbItem
+          onClick={() => router.push("/")}
+          className="text-gray-400 cursor-pointer hover:text-primary"
+        >
           Home
         </BreadcrumbItem>
-        <BreadcrumbItem onClick={() => router.push('/product/list')} className="text-gray-400 cursor-pointer hover:text-primary">
+        <BreadcrumbItem
+          onClick={() => router.push("/product/list")}
+          className="text-gray-400 cursor-pointer hover:text-primary"
+        >
           Product
         </BreadcrumbItem>
         <BreadcrumbItem className="text-gray-400 cursor-pointer hover:text-primary">
-          Detail
+          {productData?.name}
         </BreadcrumbItem>
       </Breadcrumbs>
 
@@ -71,22 +71,59 @@ const ProductDetail = ({ id }: { id: string }) => {
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         {/* Product Images */}
         <div className="lg:w-[280px] xl:w-[320px] flex-shrink-0">
-          <div className="bg-[#EBF0F7] rounded-lg p-6 mb-4 flex items-center justify-center h-[250px] sm:h-[300px]">
-            <Image
-              alt={
-                productData?.images?.[selectedImage]?.alt_image ||
-                productData?.name
-              }
-              src={productData?.images?.[selectedImage]?.url}
-              className="object-contain max-h-[200px] sm:max-h-[250px]"
-              radius="none"
-            />
+          <div className="mb-4 relative group h-[250px] sm:h-[300px]">
+            <Swiper
+              modules={[Navigation, Thumbs]}
+              spaceBetween={10}
+              slidesPerView={1}
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              onSlideChange={(swiper) => setSelectedImage(swiper.activeIndex)}
+              className="h-full"
+            >
+              {productData?.images?.map((img: any, index: number) => (
+                <SwiperSlide key={index}>
+                  <div className="flex items-center justify-center h-full">
+                    <Image
+                      alt={img.alt_image || productData?.name}
+                      src={img.url}
+                      className="object-contain max-h-[200px] sm:max-h-[250px]"
+                      radius="none"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* Navigation Buttons */}
+            {productData?.images?.length > 1 && (
+              <>
+                <button
+                  onClick={() => swiperRef.current?.slidePrev()}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-primary text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/90"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  onClick={() => swiperRef.current?.slideNext()}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-primary text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/90"
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </>
+            )}
           </div>
+
+          {/* Thumbnail Images */}
           <div className="flex gap-2">
             {productData?.images?.map((img: any, index: number) => (
               <button
                 key={index}
-                onClick={() => setSelectedImage(index)}
+                onClick={() => {
+                  setSelectedImage(index);
+                  swiperRef.current?.slideTo(index);
+                }}
                 className={`w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all ${
                   selectedImage === index
                     ? "border-primary"
@@ -129,28 +166,7 @@ const ProductDetail = ({ id }: { id: string }) => {
                 />
               ))}
             </div>
-            {/* <span className="text-sm text-gray-500">
-              ({productData?.reviewCount ?? 0} reviews)
-            </span> */}
           </div>
-
-          {/* Best Features */}
-          {/* <div className="mb-4">
-            <h3 className="font-semibold text-primary text-sm mb-2">
-              Best Features
-            </h3>
-            <ul className="space-y-1">
-              {dummy.bestFeatures.map((feature, index) => (
-                <li
-                  key={index}
-                  className="flex items-center gap-2 text-sm text-gray-600"
-                >
-                  <span className="w-2 h-2 rounded-full bg-primary"></span>
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div> */}
 
           {/* Price */}
           <p className="text-2xl sm:text-3xl font-bold text-primary mb-4">
@@ -160,35 +176,6 @@ const ProductDetail = ({ id }: { id: string }) => {
           <p className="text-primary text-sm mb-4 font-bold">
             SKU: <span className="font-normal">{productData?.sku}</span>
           </p>
-
-          {/* Quantity & Add to Cart */}
-          {/* <div className="mb-4">
-            <p className="text-sm text-gray-500 mb-2">Quantity</p>
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="flex items-center border border-[#E4E4E4] rounded-full">
-                <button
-                  onClick={() => handleQuantityChange(-1)}
-                  className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
-                >
-                  <FaMinus size={10} />
-                </button>
-                <span className="w-10 text-center text-sm">{quantity}</span>
-                <button
-                  onClick={() => handleQuantityChange(1)}
-                  className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
-                >
-                  <FaPlus size={10} />
-                </button>
-              </div>
-              <Button
-                color="primary"
-                radius="full"
-                className="px-6 font-semibold"
-              >
-                Add to Cart
-              </Button>
-            </div>
-          </div> */}
 
           {/* Actions */}
           <div className="flex items-center gap-4 text-sm text-gray-500">
@@ -212,37 +199,6 @@ const ProductDetail = ({ id }: { id: string }) => {
         {/* Stock Availability Sidebar */}
         <div className="lg:w-[200px] xl:w-[220px] flex-shrink-0">
           <div className="bg-secondary p-4 flex flex-col gap-4">
-            {/* <h3 className="font-semibold text-primary text-sm mb-4">
-              Stock Availability
-            </h3>
-            <div className="space-y-3">
-              {dummy.stockAvailability.map((stock, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between text-sm"
-                >
-                  <span className="text-gray-600">{stock.location}</span>
-                  <span
-                    className={`flex items-center gap-1 ${
-                      stock.available
-                        ? "text-green-500"
-                        : stock.status === "Sold Out"
-                        ? "text-red-500"
-                        : "text-orange-500"
-                    }`}
-                  >
-                    {stock.available ? (
-                      <FaCheck size={10} />
-                    ) : stock.status === "Sold Out" ? (
-                      <FaTimes size={10} />
-                    ) : (
-                      <FaClock size={10} />
-                    )}
-                    {stock.status}
-                  </span>
-                </div>
-              ))}
-            </div> */}
             <div className="flex flex-col">
               <span className="flex items-center">
                 <Wallet className="h-6 text-primary font-semibold" />{" "}

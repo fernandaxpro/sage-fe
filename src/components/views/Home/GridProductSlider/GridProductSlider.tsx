@@ -81,13 +81,13 @@ const GridProductsSlider = ({
                 swiperRef.current = swiper;
               }}
               modules={[Navigation, Pagination]}
-            //   spaceBetween={0}
-            //   slidesPerView={2}
-            //   loop={data.length > 6}
-            //   autoplay={{
-            //     delay: 3000,
-            //     disableOnInteraction: false,
-            //   }}
+              //   spaceBetween={0}
+              //   slidesPerView={2}
+              //   loop={data.length > 6}
+              //   autoplay={{
+              //     delay: 3000,
+              //     disableOnInteraction: false,
+              //   }}
               breakpoints={{
                 320: {
                   slidesPerView: 1,
@@ -128,6 +128,7 @@ const GridProductsSlider = ({
                     onSale={item.new_arrival}
                     isOvelayButton={isOvelayButton}
                     data={item}
+                    discount={10}
                   />
                 </SwiperSlide>
               ))}

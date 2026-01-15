@@ -1,15 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CardProduct from "@/components/ui/CardProduct";
 import Container from "@/components/ui/Container";
-import { dummyProducts } from "@/data/products";
 
-const BestSeller = () => {
-  const bestSeller = dummyProducts.slice(0, 5).map(p => ({
-    title: p.title,
-    img: p.img,
-    price: `$${p.price}`,
-    rating: p.rating,
-    onSale: p.onSale
-  }));
+interface PropTypes {
+  data?: any;
+  isOvelayButton?: boolean;
+}
+
+const BestSeller = ({ data, isOvelayButton }: PropTypes) => {
 
   return (
     <Container>
@@ -19,15 +17,19 @@ const BestSeller = () => {
         </h1>
 
         <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6">
-          {bestSeller.map((item, index) => (
+          {data?.map((item: any, index: number) => (
             <CardProduct
               key={index}
-              title={item.title}
-              img={item.img}
-              price={item.price}
-              rating={item.rating}
-              onSale={item.onSale}
+              id={item.id}
+              slug={item.slug}
+              title={item.name}
+              img={item.images?.[0]?.url}
+              price={item.recommended_retail_price}
+              rating={5}
+              onSale={item.new_arrival}
+              isOvelayButton={isOvelayButton}
               data={item}
+              discount={10}
             />
           ))}
         </div>

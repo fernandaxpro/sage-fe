@@ -37,7 +37,7 @@ const EmptyStateCard: React.FC<EmptyStateCardProps> = ({
         isEmptyCardFullWidth
           ? "grid-cols-1"
           : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6"
-      } gap-0 w-full ${className}`}
+      } gap-0 w-full bg-amber-100 ${className}`}
     >
       {skeletonArray.map((index) => (
         <Card

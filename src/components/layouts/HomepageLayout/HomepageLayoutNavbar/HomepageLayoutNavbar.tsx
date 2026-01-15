@@ -15,7 +15,7 @@ import {
   Select,
   SelectItem,
 } from "@heroui/react";
-import React from "react";
+import React, { useState } from "react";
 import {
   AUTH_BUTTONS,
   NAV_LINKS,
@@ -54,6 +54,20 @@ const HomepageLayoutNavbar = () => {
   } = useHomepageLayoutNavbar({ session, status });
   const currentPath = router.pathname;
 
+  const [cartCount, setCartCount] = useState(1);
+  const [wishlistCount, setWishlistCount] = useState(10);
+
+  const getBadgeCount = (label: string) => {
+    switch (label) {
+      case "Cart":
+        return cartCount;
+      case "Wishlist":
+        return wishlistCount;
+      default:
+        return 0;
+    }
+  };
+
   return (
     <header>
       <Navbar
@@ -64,7 +78,7 @@ const HomepageLayoutNavbar = () => {
         <div className="max-w-standard w-full mx-auto flex items-center justify-betweenr">
           <NavbarContent
             justify="start"
-            className="flex-grow-0 !justify-center md:!justify-start"
+            className="flex-grow-0 !justify-center lg:!justify-start"
           >
             <p className="text-primary text-xs font-semibold whitespace-nowrap">
               100% Secure delivery without contacting the courier
@@ -287,9 +301,10 @@ const HomepageLayoutNavbar = () => {
                   </>
                 ) : (
                   <Badge
-                    content={0}
+                    content={getBadgeCount(item.label)}
                     shape="circle"
                     className="text-secondary bg-primary text-xs md:text-sm px-[4px] py-[2px] md:px-[6px] md:py-[3px]"
+                    isInvisible={getBadgeCount(item.label) === 0}
                   >
                     {item.label === "Cart" ? (
                       <ShoppingCart

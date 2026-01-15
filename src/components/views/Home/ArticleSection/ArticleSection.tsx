@@ -1,79 +1,122 @@
 import Container from "@/components/ui/Container";
-import { Button } from "@heroui/react";
+import { Card, CardBody, CardFooter, Chip, Image } from "@heroui/react";
+import Link from "next/link";
 
-const articles = [
+interface Article {
+  id: number;
+  title: string;
+  category: string;
+  date: string;
+  author: string;
+  image: string;
+  slug: string;
+}
+
+const articles: Article[] = [
   {
     id: 1,
-    title: "Smarter Security Starts Here.",
-    description: `Reliable tech. Simple control. Total peace of mind.`,
-    buttonText: "Read More",
-    bgImage: "/images/banners/banner-cctv.jpg",
+    title:
+      "Top Gaming Headsets Tested — Performance, Comfort, and Sound Accuracy",
+    category: "GAMING GEAR",
+    date: "Jun 13, 2021",
+    author: "Alfredo Austin",
+    image: "/images/blog/blog-1.jpg",
+    slug: "top-gaming-headsets-tested",
   },
   {
     id: 2,
-    title: "Protect What Matters Most.",
-    description:
-      "Keep your home secure with smart CCTV and alarm solutions built for modern safety.",
-    buttonText: "Read More",
-    bgImage: "/images/banners/banner-smart.jpg",
+    title:
+      "Exclusive Deal for Gamers: Special Rewards for Our Longtime Players",
+    category: "GAMING DEALS",
+    date: "Jun 13, 2021",
+    author: "Alfredo Austin",
+    image: "/images/blog/blog-2.jpg",
+    slug: "exclusive-gamer-deals",
+  },
+  {
+    id: 3,
+    title:
+      "[PDF REPORT] — How Gaming Impacts Focus, Reaction Time, and Social Skills",
+    category: "GAMING INSIGHTS",
+    date: "Jun 13, 2021",
+    author: "Alfredo Austin",
+    image: "/images/blog/blog-3.jpg",
+    slug: "gaming-impact-focus-reaction-social",
   },
 ];
 
 interface PropTypes {
   title?: string;
+  data?: Article[];
 }
 
 const ArticleSection = (props: PropTypes) => {
-  const { title } = props;
+  const { title, data = articles } = props;
+
+  // Tentukan grid columns berdasarkan jumlah data
+  const getGridCols = () => {
+    if (!data || data.length === 0) return "";
+    if (data.length === 1) return "grid-cols-1";
+    if (data.length === 2) return "grid-cols-1 sm:grid-cols-2";
+    // 3 atau lebih
+    return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+  };
 
   return (
     <Container>
-      <div className="w-full">
+      <div className="w-full py-12">
         {title && (
           <h1 className="text-center font-bold pb-8 text-[40px] text-primary">
             {title}
           </h1>
         )}
-
-        <div className="md:gap-6 gap-4 grid grid-cols-1 sm:grid-cols-2 w-full">
-          {articles.map((article) => (
-            <div
+        <div className={`gap-6 grid ${getGridCols()} w-full`}>
+          {data?.map((article) => (
+            <Link
               key={article.id}
-              className="relative overflow-hidden rounded-2xl h-[280px] md:h-[320px] group cursor-pointer"
+              href={`/blog/${article.slug}`}
+              className="block"
             >
-              {/* Background Image */}
-              <div
-                className="absolute inset-0 z-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
-                style={{
-                  backgroundImage: `url(${article.bgImage})`,
-                }}
+              <Card
+                shadow="none"
+                className="border border-gray-200 hover:shadow-lg transition-shadow duration-300 group"
               >
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
-              </div>
+                {/* Image Section */}
+                <CardBody className="p-0 relative overflow-hidden">
+                  {/* Category Badge */}
+                  <div className="absolute top-4 left-4 z-10">
+                    <Chip
+                      className="bg-primary text-white font-bold text-xs px-3 py-1"
+                      size="sm"
+                    >
+                      {article.category}
+                    </Chip>
+                  </div>
 
-              {/* Content */}
-              <div className="relative z-10 flex flex-col justify-between p-6 md:p-8 lg:p-10 h-full">
-                <div className="flex-1 flex flex-col justify-center gap-3 md:gap-4">
-                  <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
+                  <div className="relative h-[200px] overflow-hidden">
+                    <Image
+                      alt={article.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      src={article.image}
+                      radius="none"
+                    />
+                  </div>
+                </CardBody>
+
+                {/* Content Section */}
+                <CardFooter className="flex flex-col items-start p-6 gap-3">
+                  <h3 className="text-primary text-lg font-bold leading-tight line-clamp-2 group-hover:text-success transition-colors">
                     {article.title}
-                  </h2>
-                  <p className="text-white/90 text-sm md:text-base leading-relaxed max-w-md">
-                    {article.description}
-                  </p>
-                </div>
+                  </h3>
 
-                <div className="mt-4">
-                  <Button
-                    className="bg-white hover:bg-gray-100 text-gray-800 text-sm font-semibold px-8 py-2 rounded-full transition-all duration-300"
-                    radius="full"
-                    size="md"
-                  >
-                    {article.buttonText}
-                  </Button>
-                </div>
-              </div>
-            </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <span>{article.date}</span>
+                    <span>•</span>
+                    <span>{article.author}</span>
+                  </div>
+                </CardFooter>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>
