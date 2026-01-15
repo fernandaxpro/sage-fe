@@ -18,14 +18,14 @@ const HomepageLayoutNavbarPopupHover = () => {
   return (
     <div className="relative" onMouseLeave={handleDelayedMouseLeave}>
       {/* Flex container with arrows and scrollable menu */}
-      <div className="bg-muted/15 flex items-center">
+      <div className="flex items-center">
         {/* Left Arrow - Mobile Only */}
         <button
           onClick={scrollLeft}
-          className="md:hidden flex-shrink-0 bg-white/90 hover:bg-white shadow-sm rounded-full p-2 ml-2 my-3"
+          className="md:hidden flex-shrink-0 bg-secondary hover:bg-bordered shadow-sm rounded-full p-2 ml-2 my-3"
           aria-label="Scroll left"
         >
-          <FaChevronLeft className="w-4 h-4 text-gray-700" />
+          <FaChevronLeft className="w-4 h-4 text-neutral" />
         </button>
 
         {/* Scrollable Navigation Container */}
@@ -37,7 +37,7 @@ const HomepageLayoutNavbarPopupHover = () => {
             {NAV_CATEGORIES.map((item) => (
               <div
                 key={item.label}
-                className="flex items-center hover:text-yellow-600 py-3 px-3 md:py-4 md:px-5 transition-colors duration-200 flex-shrink-0"
+                className="flex items-center text-primary hover:text-success py-3 px-3 md:py-4 md:px-5 transition-colors duration-200 flex-shrink-0"
               >
                 <Link
                   href={item.href}
@@ -54,10 +54,10 @@ const HomepageLayoutNavbarPopupHover = () => {
         {/* Right Arrow - Mobile Only */}
         <button
           onClick={scrollRight}
-          className="md:hidden flex-shrink-0 bg-white/90 hover:bg-white shadow-sm rounded-full p-2 mr-2 my-3"
+          className="md:hidden flex-shrink-0 bg-secondary hover:bg-bordered shadow-sm rounded-full p-2 mr-2 my-3"
           aria-label="Scroll right"
         >
-          <FaChevronRight className="w-4 h-4 text-gray-700" />
+          <FaChevronRight className="w-4 h-4 text-neutral" />
         </button>
       </div>
 

@@ -2,10 +2,12 @@ import { TbArrowRightToArc } from "react-icons/tb";
 import { Heart, ShoppingCart, User } from "lucide-react";
 
 const NAV_LINKS = [
-  { label: "FAQ", href: "/product/faq" },
+  { label: "About", href: "/about" },
+  { label: "Order Tracking", href: "/order-tracking" },
   { label: "Blog", href: "/product/blog" },
   { label: "Contact", href: "/contact" },
-  { label: "Compare", href: "/product/compare" },
+  // { label: "FAQ", href: "/product/faq" },
+  // { label: "Compare", href: "/product/compare" },
 ];
 
 const NAV_CATEGORIES = [
