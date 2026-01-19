@@ -105,9 +105,8 @@ const CardProduct = ({
 
             {isOvelayButton && (
               <div
-                className={`absolute top-2 right-2 flex flex-col items-center justify-center gap-2 transition-opacity duration-300 z-10 ${
-                  isHovered ? "opacity-100" : "opacity-0"
-                }`}
+                className={`absolute top-2 right-2 flex flex-col items-center justify-center gap-2 transition-opacity duration-300 z-10 ${isHovered ? "opacity-100" : "opacity-0"
+                  }`}
               >
                 <Tooltip content="Wishlist" placement="right">
                   <Button
@@ -159,9 +158,14 @@ const CardProduct = ({
         </Link>
 
         <CardFooter className="flex flex-col items-start p-0">
-          <p className="text-primary text-sm font-medium cursor-pointer hover:text-success line-clamp-2 mb-4 min-h-[40px]">
-            {title}
-          </p>
+          <Link
+            href={slug ? `/product/list/detail/${slug}` : "#"}
+            className="block"
+          >
+            <p className="text-primary text-sm font-medium cursor-pointer hover:text-success line-clamp-2 mb-4 min-h-[40px]">
+              {title}
+            </p>
+          </Link>
 
           {/* Price Section */}
           <div className="flex items-center gap-2 mb-2">
@@ -175,14 +179,15 @@ const CardProduct = ({
 
           {/* Rating */}
           <div className="flex items-center justify-between w-full mt-1">
-            <div className="flex items-center text-yellow-400 gap-0.5">
+            <div className="flex items-center text-success gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
                 <FaStar
                   key={i}
-                  size={14}
-                  fill={i < Math.floor(rating) ? "#FFD700" : "#E5E7EB"}
+                  size={18}
                   className={
-                    i < Math.floor(rating) ? "text-yellow-400" : "text-gray-200"
+                    i < Math.floor(rating)
+                      ? "text-rating-filled fill-current"
+                      : "text-rating-empty fill-current"
                   }
                 />
               ))}

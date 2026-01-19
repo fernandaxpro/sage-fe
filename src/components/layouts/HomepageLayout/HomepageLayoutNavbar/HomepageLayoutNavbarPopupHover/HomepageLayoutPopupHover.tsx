@@ -25,7 +25,7 @@ const HomepageLayoutNavbarPopupHover = () => {
           className="md:hidden flex-shrink-0 bg-secondary hover:bg-bordered shadow-sm rounded-full p-2 ml-2 my-3"
           aria-label="Scroll left"
         >
-          <FaChevronLeft className="w-4 h-4 text-neutral" />
+          <FaChevronLeft className="w-4 h-4 text-muted" />
         </button>
 
         {/* Scrollable Navigation Container */}
@@ -57,7 +57,7 @@ const HomepageLayoutNavbarPopupHover = () => {
           className="md:hidden flex-shrink-0 bg-secondary hover:bg-bordered shadow-sm rounded-full p-2 mr-2 my-3"
           aria-label="Scroll right"
         >
-          <FaChevronRight className="w-4 h-4 text-neutral" />
+          <FaChevronRight className="w-4 h-4 text-muted" />
         </button>
       </div>
 

@@ -17,13 +17,13 @@ import {
 } from "@heroui/react";
 import React, { useState } from "react";
 import {
-  AUTH_BUTTONS,
+  // AUTH_BUTTONS,
   NAV_LINKS,
   USER_ACTION_BUTTONS,
 } from "../HomepageLayout.constants";
 import Link from "next/link";
 // import Image from "next/image";
-import { CiSearch } from "react-icons/ci";
+// import { CiSearch } from "react-icons/ci";
 import useHomepageLayoutNavbar from "./useHomepageLayoutNavbar";
 import ModalAuth from "@/components/ui/ModalAuth";
 import ShoppingCart from "@/components/ui/ShoppingCart";
@@ -32,7 +32,7 @@ import { HiBars3 } from "react-icons/hi2";
 import HomepageLayoutMobileSidebar from "./HomepageLayoutMobileSidebar";
 import HomepageLayoutMobileLoginDrawer from "./HomepageLayoutMobileLoginDrawer";
 import { signOut, useSession } from "next-auth/react";
-import { Facebook, Instagram, Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 import { useRouter } from "next/router";
 import { SOCIAL_LINKS } from "./HomePageLayoutNavbar.constants";
 
@@ -51,6 +51,12 @@ const HomepageLayoutNavbar = () => {
     handleMobileMenuToggle,
     isMobileLoginOpen,
     handleMobileLoginToggle,
+
+    control,
+    handleSubmit,
+    handleLogin,
+    isPendingLogin,
+    errors,
   } = useHomepageLayoutNavbar({ session, status });
   const currentPath = router.pathname;
 
@@ -367,6 +373,7 @@ const HomepageLayoutNavbar = () => {
       <HomepageLayoutNavbarPopupHover />
 
       <HomepageLayoutMobileSidebar
+        dataProfile={dataProfile}
         isOpen={isMobileMenuOpen}
         onClose={handleMobileMenuToggle}
         onOpenLogin={handleMobileLoginToggle}
@@ -375,6 +382,11 @@ const HomepageLayoutNavbar = () => {
       <HomepageLayoutMobileLoginDrawer
         isOpen={isMobileLoginOpen}
         onClose={handleMobileLoginToggle}
+        control={control}
+        handleSubmit={handleSubmit}
+        handleLogin={handleLogin}
+        isPendingLogin={isPendingLogin}
+        errors={errors}
       />
     </header>
   );

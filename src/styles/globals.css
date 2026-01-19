@@ -1,8 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
 
-body {
-  font-family: "Jost", sans-serif;
+
+@layer base {
+  body {
+    font-family: 'Jost', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6, p, span, div {
+    font-family: 'Jost', sans-serif;
+  }
 }

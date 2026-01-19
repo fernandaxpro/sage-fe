@@ -37,7 +37,7 @@ const HomepageLayoutFooter = () => {
             <div className="text-base flex flex-col gap-[10px]">
               {FOOTER_INFO.contacts.map((contact, i) => (
                 <div key={i} className="flex items-start gap-[12px]">
-                  <p className="font-bold text-base md:text-lg text-neutral">{contact.text}</p>
+                  <p className="font-bold text-base md:text-lg text-muted">{contact.text}</p>
                 </div>
               ))}
             </div>
@@ -69,8 +69,8 @@ const HomepageLayoutFooter = () => {
                   <h1 className="text-primary font-bold text-lg md:text-2xl">0020 500 - SAGE GAMES - 00</h1>
 
                   <div className="flex flex-col gap-2">
-                    <p className="text-neutral font-bold text-base md:text-lg">Monday - Friday: 9:00 - 20:00</p>
-                    <p className="text-neutral font-bold text-base md:text-lg">Saturday: 11:00 - 15:00</p>
+                    <p className="text- font-bold text-base md:text-lg">Monday - Friday: 9:00 - 20:00</p>
+                    <p className="text- font-bold text-base md:text-lg">Saturday: 11:00 - 15:00</p>
                   </div>
                 </div>
               </div>

@@ -1,16 +1,16 @@
-import { Facebook, Instagram, X } from "lucide-react";
+import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
 
 const SOCIAL_LINKS = [
   {
-    icon: <Facebook size={16} className="text-xs font-semibold" />,
+    icon: <FaFacebookF size={16} className="text-xs font-medium" />,
     href: "#",
   },
   {
-    icon: <Instagram size={16} className="text-xs font-semibold" />,
+    icon: <FaInstagram size={16} className="text-xs font-medium" />,
     href: "#",
   },
   {
-    icon: <X size={16} className="text-xs font-semibold" />,
+    icon: <FaXTwitter size={16} className="text-xs font-medium" />,
     href: "#",
   },
 ];

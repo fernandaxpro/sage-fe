@@ -10,6 +10,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Jost", "sans-serif"],
+        jost: ["Jost", "sans-serif"],
+      },
       maxWidth: {
         standard: "1920px",
       },
@@ -19,26 +23,30 @@ const config: Config = {
       colors: {
         primary: "#103178",
         secondary: "#F0F2F5",
-        noise: "#F2F2F2",
         success: "#FF9923",
-        neutral: "#5B6C9D",
-        muted: "#F6F7E5",
+        surface: "#F6F7E5",
+
+        rating: {
+          filled: "#FF9923",
+          empty: "#E5E7EB",
+        },
+        muted: "#5B6C9D",
         bordered: "#D9DEE8",
-        
-        danger: "#E62727",
+        danger: "#EF4444",
+
         light: "#F5F5F5",
-        legendary: '#787878'
+        legendary: "#787878",
       },
       fontSize: {
         xs: ["12px", { lineHeight: "16px" }],
         sm: ["14px", { lineHeight: "20px" }],
         base: ["16px", { lineHeight: "24px" }],
         lg: ["18px", { lineHeight: "28px" }],
-        xl: ["20px", { lineHeight: "28px" }], 
+        xl: ["20px", { lineHeight: "28px" }],
         "2xl": ["24px", { lineHeight: "32px" }],
         "3xl": ["30px", { lineHeight: "36px" }],
-        "4xl": ["36px", { lineHeight: "40px" }], 
-        "5xl": ["48px", { lineHeight: "48px" }], 
+        "4xl": ["36px", { lineHeight: "40px" }],
+        "5xl": ["48px", { lineHeight: "48px" }],
       },
     },
   },

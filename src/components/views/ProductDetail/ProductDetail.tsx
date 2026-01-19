@@ -2,54 +2,63 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Image, Breadcrumbs, BreadcrumbItem } from "@heroui/react";
-import { FaStar, FaGlobe, FaStore, FaTruck, FaHeart } from "react-icons/fa";
-import { FaBagShopping } from "react-icons/fa6";
+import { Image, Breadcrumbs, BreadcrumbItem, Button, Chip, Divider } from "@heroui/react";
+import { FaStar } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaMinus, FaPlus, FaXTwitter } from "react-icons/fa6";
+import { FaCheck } from "react-icons/fa6";
 import Container from "@/components/ui/Container";
 import useProductDetail from "./useProductDetail";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import TabsProductDetail from "./TabsProductDetail";
-import {
-  ShoppingBag,
-  Truck,
-  Wallet,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
 import ProductDetailSkeleton from "./ProductDetailSkeleton";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CreditCard,
+  Package,
+  Truck,
+} from "lucide-react";
+import { useSession } from "next-auth/react";
 
-const relatedProduct = {
-  id: 2,
-  title: "SH-SHELLYBUTW SHELLY BUTTON 1 - White",
-  img: "/images/products/Shelly BUTTON 1 - Black SH-SHELLYBUTB.png",
-  price: 47.75,
-  rating: 4,
-};
-
-const ProductDetail = ({ id }: { id: string }) => {
+const ProductDetail = ({
+  // id 
+}: { id: string }) => {
   const { status } = useSession();
   const router = useRouter();
   const [selectedImage, setSelectedImage] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
-
+  const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState(0);
+  const [selectedSize, setSelectedSize] = useState("S");
   const { productData, isLoadingProduct } = useProductDetail();
+
+  const handleQuantityChange = (delta: number) => {
+    setQuantity(Math.max(1, quantity + delta));
+  };
+
+  const colors = [
+    { name: "Navy", value: "#1E3A8A" },
+    { name: "Gray", value: "#6B7280" },
+    { name: "Orange", value: "#F97316" },
+  ];
+
+  const sizes = ["S", "M", "L"];
 
   if (isLoadingProduct || !productData) {
     return <ProductDetailSkeleton />;
   }
 
+  const rating = 1
+
   return (
     <Container className="flex-col gap-6 lg:gap-8 px-4 sm:px-6 lg:px-8 py-6">
-      <Breadcrumbs className="text-xs sm:text-sm text-gray-500">
+      <Breadcrumbs className="text-xs sm:text-sm text-primary">
         <BreadcrumbItem
           onClick={() => router.push("/")}
           className="text-gray-400 cursor-pointer hover:text-primary"
@@ -67,224 +76,316 @@ const ProductDetail = ({ id }: { id: string }) => {
         </BreadcrumbItem>
       </Breadcrumbs>
 
-      {/* Main Product Section */}
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-        {/* Product Images */}
-        <div className="lg:w-[280px] xl:w-[320px] flex-shrink-0">
-          <div className="mb-4 relative group h-[250px] sm:h-[300px]">
-            <Swiper
-              modules={[Navigation, Thumbs]}
-              spaceBetween={10}
-              slidesPerView={1}
-              onSwiper={(swiper) => (swiperRef.current = swiper)}
-              onSlideChange={(swiper) => setSelectedImage(swiper.activeIndex)}
-              className="h-full"
-            >
-              {productData?.images?.map((img: any, index: number) => (
-                <SwiperSlide key={index}>
-                  <div className="flex items-center justify-center h-full">
-                    <Image
-                      alt={img.alt_image || productData?.name}
-                      src={img.url}
-                      className="object-contain max-h-[200px] sm:max-h-[250px]"
-                      radius="none"
-                    />
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-
-            {/* Navigation Buttons */}
-            {productData?.images?.length > 1 && (
-              <>
-                <button
-                  onClick={() => swiperRef.current?.slidePrev()}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-primary text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/90"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft size={20} />
-                </button>
-                <button
-                  onClick={() => swiperRef.current?.slideNext()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-primary text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/90"
-                  aria-label="Next image"
-                >
-                  <ChevronRight size={20} />
-                </button>
-              </>
-            )}
-          </div>
-
-          {/* Thumbnail Images */}
-          <div className="flex gap-2">
-            {productData?.images?.map((img: any, index: number) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setSelectedImage(index);
-                  swiperRef.current?.slideTo(index);
-                }}
-                className={`w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                  selectedImage === index
-                    ? "border-primary"
-                    : "border-[#E4E4E4]"
-                }`}
+      <div className="flex flex-col gap-6">
+        {/* Product Information Container */}
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* Product Image Slider */}
+          <div className="flex-1 lg:w-[400px] xl:w-[450px] flex-shrink-0">
+            {/* Main Image */}
+            <div className="mb-4 relative group">
+              <Swiper
+                modules={[Navigation, Thumbs]}
+                spaceBetween={10}
+                slidesPerView={1}
+                onSwiper={(swiper) => (swiperRef.current = swiper)}
+                onSlideChange={(swiper) => setSelectedImage(swiper.activeIndex)}
+                className="w-full"
               >
-                <Image
-                  alt={img.alt_image}
-                  src={img.url}
-                  className="object-contain w-full h-full"
-                  radius="none"
-                />
-              </button>
-            ))}
-          </div>
-        </div>
+                {productData?.images?.map((img: any, index: number) => (
+                  <SwiperSlide key={index}>
+                    <div className="flex items-center justify-center rounded-lg">
+                      <Image
+                        alt={img.alt_image || productData?.name}
+                        src={img.url}
+                        className="object-contain w-full h-[300px] sm:h-[350px] lg:h-[400px]"
+                        radius="none"
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
 
-        {/* Product Info */}
-        <div className="flex-1">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary mb-2">
-            {productData?.name}
-          </h1>
-          <p className="text-primary text-sm mb-4">
-            {productData?.description}
-          </p>
+              {/* Navigation Buttons */}
+              {productData?.images?.length > 1 && (
+                <>
+                  <button
+                    onClick={() => swiperRef.current?.slidePrev()}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-primary text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/90"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <button
+                    onClick={() => swiperRef.current?.slideNext()}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-primary text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/90"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                </>
+              )}
+            </div>
 
-          {/* Rating */}
-          <div className="flex items-center gap-2 mb-4">
-            <div className="flex items-center gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <FaStar
-                  key={i}
-                  size={14}
-                  fill={i < productData?.rating ? "#FFD700" : "#E5E7EB"}
-                  className={
-                    i < productData?.rating
-                      ? "text-yellow-400"
-                      : "text-gray-200"
-                  }
-                />
+            {/* Thumbnail Images */}
+            <div className="flex gap-3 overflow-x-auto pb-2">
+              {productData?.images?.map((img: any, index: number) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setSelectedImage(index);
+                    swiperRef.current?.slideTo(index);
+                  }}
+                  className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border-2 transition-all ${selectedImage === index && "border-primary"
+                    }`}
+                >
+                  <Image
+                    alt={img.alt_image}
+                    src={img.url}
+                    className="object-contain w-full h-full"
+                    radius="none"
+                  />
+                </button>
               ))}
             </div>
           </div>
 
-          {/* Price */}
-          <p className="text-2xl sm:text-3xl font-bold text-primary mb-4">
-            ${productData?.recommended_retail_price}
-          </p>
+          <div className="flex-1 flex flex-col md:flex-row gap-4">
+            {/* Product Information Detail */}
+            <div className="flex-1 flex flex-col gap-6 lg:px-10">
+              {/* Header Section */}
+              <div className="flex flex-col gap-2">
+                {/* <p className="text- text-sm">Medicstore</p> */}
+                <h1 className="text-primary text-3xl font-bold">
+                  {productData?.name}
+                </h1>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <FaStar
+                        key={i}
+                        size={18}
+                        className={
+                          i < Math.floor(rating)
+                            ? "text-rating-filled fill-current"
+                            : "text-rating-empty fill-current"
+                        }
+                      />
+                    ))}
+                  </div>
+                  <span className="text-[#1E3A8A] text-lg font-semibold">(1 review)</span>
+                </div>
+              </div>
 
-          <p className="text-primary text-sm mb-4 font-bold">
-            SKU: <span className="font-normal">{productData?.sku}</span>
-          </p>
+              <Divider className="bg-gray-200" />
 
-          {/* Actions */}
-          <div className="flex items-center gap-4 text-sm text-gray-500">
-            <button
-              onClick={() => {
-                if (status === "unauthenticated") {
-                  router.push("/auth/login");
-                }
-              }}
-              className="flex items-center gap-2 hover:text-primary"
-            >
-              <FaHeart size={14} />
-              Add to Wishlist
-            </button>
-            <button className="flex items-center gap-2 hover:text-primary">
-              Add to Compare
-            </button>
+              {/* Features List */}
+              <div className="flex flex-col gap-3">
+                <div className="flex items-start gap-2">
+                  <FaCheck className="text- mt-1" />
+                  <p className="text-primary text-base font-bold">
+                    Study history up to 30 days
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <FaCheck className="text- mt-1" />
+                  <p className="text-primary text-base font-bold">
+                    Up to 5 users simultaneously
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <FaCheck className="text- mt-1" />
+                  <p className="text-primary text-base font-bold">
+                    Has HEALTH certificate
+                  </p>
+                </div>
+              </div>
+
+              <Divider className="bg-gray-200" />
+
+              {/* Benefits Section */}
+              <div className="flex flex-col gap-4">
+                <div className="flex items-start gap-3">
+                  <CreditCard className="text-primary mt-0.5 flex-shrink-0" size={20} />
+                  <div className="flex flex-col">
+                    <p className="text-primary text-base font-bold">100% Money back</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Package className="text-primary mt-0.5 flex-shrink-0" size={20} />
+                  <div className="flex flex-col">
+                    <p className="text-primary text-base font-bold">Non-contact shipping</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Truck className="text-primary mt-0.5 flex-shrink-0" size={20} />
+                  <div className="flex flex-col">
+                    <p className="text-primary text-base font-bold">
+                      Free delivery for order over $200
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <Divider className="bg-gray-200" />
+
+              {/* Tags and SKU */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-primary text-base font-bold">Tags:</span>
+                  <span className="text-muted text-base font-bold">Thermometer, Health</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-primary text-base font-bold">SKU:</span>
+                  <span className="text-muted text-base font-bold">AU110876</span>
+                </div>
+              </div>
+
+              <Divider className="bg-gray-200" />
+
+              {/* Social Media Icons */}
+              <div className="flex items-center gap-3">
+                <button
+                  className="w-10 h-10 flex items-center justify-center bg-[#1877F2] text-white rounded hover:opacity-90 transition-opacity"
+                  aria-label="Share on Facebook"
+                >
+                  <FaFacebookF size={18} />
+                </button>
+                <button
+                  className="w-10 h-10 flex items-center justify-center bg-black text-white rounded hover:opacity-90 transition-opacity"
+                  aria-label="Share on X"
+                >
+                  <FaXTwitter size={18} />
+                </button>
+
+                <button
+                  className="w-10 h-10 flex items-center justify-center bg-[#E4405F] text-white rounded hover:opacity-90 transition-opacity"
+                  aria-label="Share on Instagram"
+                >
+                  <FaInstagram size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Product Action */}
+            <div className="flex-1 flex flex-col gap-6 px-8 py-6 bg-secondary md:max-w-[320px]">
+              {/* Stock Status */}
+              <div className="inline-flex">
+                <Chip
+                  color="success"
+                  variant="solid"
+                  className="uppercase text-white bg-danger font-bold text-xs px-4 py-1 rounded-full"
+                >
+                  Only 3 left In Stock
+                </Chip>
+              </div>
+
+              {/* Price */}
+              <h1 className="text-4xl font-bold text-primary">
+                $77.65
+              </h1>
+
+              {/* Color Selection */}
+              <div className="flex flex-col gap-3">
+                <p className="text-sm font-bold text-primary">
+                  Color:
+                </p>
+                <div className="flex gap-2">
+                  {colors.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedColor(index)}
+                      className={`w-8 h-8 rounded-full border-2 transition-all ${selectedColor === index
+                        ? "border-white scale-110"
+                        : "border-bordered"
+                        }`}
+                      style={{ backgroundColor: color.value }}
+                      aria-label={`Select ${color.name} color`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Size Selection */}
+              <div className="flex flex-col gap-3">
+                <p className="text-sm font-bold text-primary">
+                  Sizes:
+                </p>
+                <div className="flex gap-3">
+                  {sizes.map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`w-12 h-10 rounded-full border-2 font-semibold text-sm transition-all ${selectedSize === size
+                        ? "border-primary bg-secondary text-primary"
+                        : "border-bordered bg-transparent text- hover:border-primary"
+                        }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quantity Selection */}
+              <div className="flex flex-col gap-3">
+                <p className="text-sm font-bold text-primary">
+                  Quantity
+                </p>
+                <div className="flex items-center justify-between bg-white rounded-full px-4 py-2 border border-bordered">
+                  <button
+                    onClick={() => handleQuantityChange(-1)}
+                    className="text-gray-400 hover:text-primary transition-colors"
+                    aria-label="Decrease quantity"
+                  >
+                    <FaMinus size={12} />
+                  </button>
+                  <span className="text-lg font-semibold text-primary min-w-[30px] text-center">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => handleQuantityChange(1)}
+                    className="text-gray-400 hover:text-primary transition-colors"
+                    aria-label="Increase quantity"
+                  >
+                    <FaPlus size={12} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Add to Cart Button */}
+              <Button
+                color="warning"
+                className="w-full bg-[#F97316] text-white font-bold py-6 text-base rounded-full hover:bg-[#EA580C] transition-colors"
+              >
+                Add to cart
+              </Button>
+
+              {/* Wishlist and Compare Links */}
+              <div className="flex items-center justify-center gap-6 text-sm">
+                <button
+                  className="font-bold hover:underline transition-all text-primary"
+                  onClick={() => {
+                    if(status === 'unauthenticated') return router.push('/auth/login')
+                  }}
+                >
+                  Add to wishlist
+                </button>
+                <button
+                  className="font-bold hover:underline transition-all text-primary"
+                  onClick={() => {
+                    if(status === 'unauthenticated') return router.push('/auth/login')
+                  }}
+                >
+                  Add to compare
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Stock Availability Sidebar */}
-        <div className="lg:w-[200px] xl:w-[220px] flex-shrink-0">
-          <div className="bg-secondary p-4 flex flex-col gap-4">
-            <div className="flex flex-col">
-              <span className="flex items-center">
-                <Wallet className="h-6 text-primary font-semibold" />{" "}
-                <p className="text-primary font-semibold text-sm ml-2">100%</p>
-              </span>
-              <p className="text-primary font-semibold text-sm">Money back</p>
-            </div>
-
-            <div className="flex flex-col">
-              <span className="flex items-center">
-                <ShoppingBag className="h-6 text-primary font-semibold" />{" "}
-                <p className="text-primary font-semibold text-sm ml-2">
-                  No-contact
-                </p>
-              </span>
-              <p className="text-primary font-semibold text-sm">shipping</p>
-            </div>
-
-            <div className="flex flex-col">
-              <span className="flex items-center">
-                <Truck className="h-6 text-primary font-semibold" />{" "}
-                <p className="text-primary font-semibold text-sm ml-2">
-                  Free Delivery For
-                </p>
-              </span>
-              <p className="text-primary font-semibold text-sm">
-                Order Over $200
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs Section */}
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mt-6">
-        {/* Main Content with Tabs */}
-        <div className="flex-1">
+        {/* Product Tab Container */}
+        <div className="flex flex-col gap-2">
           <TabsProductDetail data={productData} />
-        </div>
-
-        {/* Related Products Sidebar */}
-        <div className="lg:w-[200px] xl:w-[220px] flex-shrink-0">
-          <h3 className="font-semibold text-primary text-sm mb-4">
-            Related Products
-          </h3>
-          <div className="border border-[#E4E4E4] rounded-lg p-4">
-            <div className="flex items-center justify-center mb-3">
-              <Image
-                alt={relatedProduct.title}
-                src={relatedProduct.img}
-                className="object-contain h-[100px]"
-                radius="none"
-              />
-            </div>
-            <p className="text-xs text-gray-600 font-medium line-clamp-2 mb-2">
-              {relatedProduct.title}
-            </p>
-            <p className="text-lg font-bold text-primary mb-2">
-              ${relatedProduct.price.toFixed(2)}
-            </p>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <FaStar
-                    key={i}
-                    size={10}
-                    fill={i < relatedProduct.rating ? "#FFD700" : "#E5E7EB"}
-                    className={
-                      i < relatedProduct.rating
-                        ? "text-yellow-400"
-                        : "text-gray-200"
-                    }
-                  />
-                ))}
-              </div>
-              <div className="flex items-center gap-1.5">
-                <FaGlobe size={10} className="text-green-500 cursor-pointer" />
-                <FaStore size={10} className="text-yellow-500 cursor-pointer" />
-                <FaBagShopping
-                  size={10}
-                  className="text-red-500 cursor-pointer"
-                />
-                <FaTruck size={10} className="text-primary cursor-pointer" />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </Container>

@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import Link from "next/link";
-import { Button } from "@heroui/react";
+import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
 import { RxCross2 } from "react-icons/rx";
 import { FaChevronDown } from "react-icons/fa";
 import {
@@ -10,20 +11,27 @@ import {
     USER_ACTION_BUTTONS,
 } from "../HomepageLayout.constants";
 import { POPUP_CONTENT, BrandItem } from "./HomepageLayoutNavbarPopupHover/HomepageLayoutPopupHover.constants";
+import { signOut, useSession } from "next-auth/react";
+import { LogIn } from "lucide-react";
+import { useRouter } from "next/router";
 
 interface HomepageLayoutMobileSidebarProps {
     isOpen: boolean;
     onClose: () => void;
     onOpenLogin: () => void;
+    dataProfile: any
 }
 
 const HomepageLayoutMobileSidebar = ({
     isOpen,
     onClose,
     onOpenLogin,
+    dataProfile
 }: HomepageLayoutMobileSidebarProps) => {
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-
+    const { status } = useSession();
+    const router = useRouter();
+    const currentPath = router.pathname;
     const toggleCategory = (category: string) => {
         setExpandedCategory(expandedCategory === category ? null : category);
     };
@@ -35,7 +43,17 @@ const HomepageLayoutMobileSidebar = ({
         ? [{ label: "Wishlists", href: wishlistLink.href }, ...NAV_LINKS]
         : NAV_LINKS;
 
-    const signInButton = AUTH_BUTTONS.find((btn) => btn.label === "Login");
+     const handleMenuClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, label: string) => {
+        const requiresAuth = ['Wishlists', 'Account', 'Cart'].includes(label);
+        
+        if (status === 'unauthenticated' && requiresAuth) {
+            e.preventDefault(); 
+            onClose(); 
+            onOpenLogin();
+        } else {
+            onClose();
+        }
+    };
 
     return (
         <div className="fixed inset-0 z-50 lg:hidden font-sans">
@@ -60,32 +78,12 @@ const HomepageLayoutMobileSidebar = ({
 
                 {/* content container */}
                 <div className="flex flex-col gap-8">
-
-                    {/* Our Menu Section */}
-                    <div>
-                        <h3 className="text-gray-900 font-bold text-lg mb-4">Our Menu</h3>
-                        <ul className="flex flex-col gap-3">
-                            {menuLinks.map((link: { label: string; href: string }) => (
-                                <li key={link.label}>
-                                    <Link
-                                        href={link.href}
-                                        className="text-gray-700 hover:text-primary text-base font-medium block"
-                                        onClick={onClose}
-                                    >
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Sign In Button */}
-                    {signInButton && (
-                        <div>
+                    <div className="flex">
+                        {status === 'unauthenticated' ? (
                             <Button
                                 className="bg-[#0f294d] text-white w-full font-semibold rounded-full py-6"
                                 size="lg"
-                                startContent={signInButton.icon}
+                                startContent={<LogIn />}
                                 onPress={() => {
                                     onClose();
                                     onOpenLogin();
@@ -93,8 +91,57 @@ const HomepageLayoutMobileSidebar = ({
                             >
                                 Sign In
                             </Button>
-                        </div>
-                    )}
+                        ) : (
+                            <div className="flex items-center gap-2">
+                                <Dropdown>
+                                    <DropdownTrigger>
+                                        <Avatar
+                                            isBordered
+                                            as="button"
+                                            name={dataProfile?.first_name ?? ""}
+                                            src={dataProfile?.profile_picture}
+                                            className="cursor-pointer font-bold"
+                                            showFallback
+                                        />
+                                    </DropdownTrigger>
+                                    <DropdownMenu>
+                                        {currentPath !== "/user/profile" ? (
+                                            <DropdownItem key="profile" href="/user/profile">
+                                                Profile
+                                            </DropdownItem>
+                                        ) : null}
+                                        <DropdownItem
+                                            key="signout"
+                                            onPress={() => signOut()}
+                                        >
+                                            Logout
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                                <div className="flex-1 flex justify-between items-center">
+                                    <h1 className="text-primary font-semibold text-base">{dataProfile?.first_name} {dataProfile?.last_name}</h1>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Our Menu Section */}
+                    <div>
+                        <h3 className="text-gray-900 font-bold text-lg mb-4">Our Menu</h3>
+                        <ul className="flex flex-col gap-3">
+                             {menuLinks.map((link: { label: string; href: string }) => (
+                                <li key={link.label}>
+                                    <Link
+                                        href={link.href}
+                                        className="text-gray-700 hover:text-primary text-base font-medium block"
+                                        onClick={(e) => handleMenuClick(e, link.href, link.label)}
+                                    >
+                                        {link.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
 
                     {/* Our Products Section */}
                     <div>

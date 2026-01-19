@@ -1,9 +1,9 @@
 import HomepageLayout from "@/components/layouts/HomepageLayout"
-import ProductList from "@/components/views/Products"
+import ProductList from "@/components/views/ProductList"
 
 const ProductPage = () => {
     return (
-        <HomepageLayout title="Products">
+        <HomepageLayout title="Product List">
             <ProductList />
         </HomepageLayout>
     )

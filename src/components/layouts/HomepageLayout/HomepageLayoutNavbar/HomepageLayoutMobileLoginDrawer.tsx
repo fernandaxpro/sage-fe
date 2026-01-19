@@ -1,16 +1,28 @@
 import React, { useState } from "react";
-import { Button, Input, Link } from "@heroui/react";
+import { Button, Input, Link, Spinner } from "@heroui/react";
 import { RxCross2 } from "react-icons/rx";
 import { EyeIcon, EyeSlashIcon, AtSymbolIcon, LockClosedIcon } from "@heroicons/react/16/solid";
+import { Control, Controller, FieldErrors, UseFormHandleSubmit } from "react-hook-form";
+import { ILogin } from "@/types/Auth";
 
 interface HomepageLayoutMobileLoginDrawerProps {
     isOpen: boolean;
     onClose: () => void;
+    control: Control<ILogin>;
+    handleSubmit: UseFormHandleSubmit<ILogin>;
+    handleLogin: (data: ILogin) => void;
+    isPendingLogin: boolean;
+    errors: FieldErrors<ILogin>;
 }
 
 const HomepageLayoutMobileLoginDrawer = ({
     isOpen,
     onClose,
+    control,
+    handleSubmit,
+    handleLogin,
+    isPendingLogin,
+    errors,
 }: HomepageLayoutMobileLoginDrawerProps) => {
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
@@ -40,59 +52,68 @@ const HomepageLayoutMobileLoginDrawer = ({
 
                 {/* Content */}
                 <div className="flex flex-col">
-                    <h2 className="text-xl font-bold text-gray-900 mb-6">Sign In</h2>
+                    <h2 className="text-xl font-bold text-gray-900 mb-6">
+                        Sign In
+                    </h2>
 
-                    <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
+                    <form className="flex flex-col gap-6" onSubmit={handleSubmit(handleLogin)}>
 
-                        {/* Email */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Email <span className="text-red-500">*</span>
-                            </label>
+                        <Controller name='email' control={control} render={({ field }) => (
                             <Input
+                                {...field}
                                 startContent={
-                                    <AtSymbolIcon className="w-5 h-5 text-gray-400 pointer-events-none" />
+                                    <AtSymbolIcon className="w-5 h-5 text-base text-legendary pointer-events-none" />
+                                }
+                                label={
+                                    <span className="text-base font-semibold">Email</span>
                                 }
                                 isRequired
+                                isInvalid={errors.email !== undefined}
+                                errorMessage={errors.email?.message}
                                 placeholder="e.g. email@example.com"
-                                classNames={{
-                                    input: "text-base",
-                                    inputWrapper: "h-[48px] rounded-full border border-gray-200 bg-white",
-                                }}
+                                labelPlacement="outside"
+                                variant="bordered"
+                                radius="full"
+                                autoComplete="off"
+                                className='text-base font-semibold'
                             />
-                        </div>
+                        )} />
 
-                        {/* Password */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Password <span className="text-red-500">*</span>
-                            </label>
+                        <Controller name='password' control={control} render={({ field }) => (
                             <Input
+                                {...field}
                                 startContent={
-                                    <LockClosedIcon className="w-5 h-5 text-gray-400 pointer-events-none" />
+                                    <LockClosedIcon className="w-5 h-5 text-base text-legendary pointer-events-none" />
                                 }
                                 endContent={
                                     <button
-                                        className="focus:outline-none"
+                                        aria-label="toggle password visibility"
+                                        className="focus:outline-solid outline-transparent"
                                         type="button"
                                         onClick={toggleVisibility}
                                     >
                                         {isVisible ? (
-                                            <EyeIcon className="w-5 h-5 text-gray-400" />
+                                            <EyeIcon className="w-5 h-5 text-base text-legendary pointer-events-none" />
                                         ) : (
-                                            <EyeSlashIcon className="w-5 h-5 text-gray-400" />
+                                            <EyeSlashIcon className="w-5 h-5 text-base text-legendary pointer-events-none" />
                                         )}
                                     </button>
                                 }
                                 isRequired
-                                placeholder="xxxxxx"
+                                labelPlacement="outside"
+                                label={
+                                    <span className="text-base font-semibold">Password</span>
+                                }
+                                placeholder=""
                                 type={isVisible ? "text" : "password"}
-                                classNames={{
-                                    input: "text-base",
-                                    inputWrapper: "h-[48px] rounded-full border border-gray-200 bg-white",
-                                }}
+                                variant="bordered"
+                                radius="full"
+                                autoComplete='off'
+                                className='text-base font-semibold'
+                                isInvalid={errors.password !== undefined}
+                                errorMessage={errors.password?.message}
                             />
-                        </div>
+                        )} />
 
                         {/* Forgot Password */}
                         <Link href="#" className="text-primary font-semibold text-sm">
@@ -101,11 +122,13 @@ const HomepageLayoutMobileLoginDrawer = ({
 
                         {/* Submit Button */}
                         <Button
-                            className="bg-[#0f294d] text-white w-full font-bold rounded-full py-6 mt-2"
+                            className="bg-primary text-secondary w-full font-bold rounded-full py-6 mt-2"
                             size="lg"
                             type="submit"
                         >
-                            Sign In
+                            {isPendingLogin ? (
+                                <Spinner color="white" size="sm" />
+                            ) : "Sign in"}
                         </Button>
 
                         {/* Sign Up Link */}
