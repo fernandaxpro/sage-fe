@@ -3,15 +3,15 @@ import { Heart, ShoppingCart, User } from "lucide-react";
 
 const NAV_LINKS = [
   { label: "About", href: "/about" },
-  { label: "Order Tracking", href: "/order-tracking" },
-  { label: "Blog", href: "/product/blog" },
+  { label: "Order Tracking", href: "/user/order-tracking" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
   // { label: "FAQ", href: "/product/faq" },
   // { label: "Compare", href: "/product/compare" },
 ];
 
 const NAV_CATEGORIES = [
-  { label: "Products", href: "/products" },
+  { label: "Products", href: "/product/list" },
   { label: "Pre-Order", href: "/pre-order" },
   { label: "Pre-Own", href: "/pre-own" },
   { label: "Retro", href: "/retro" },

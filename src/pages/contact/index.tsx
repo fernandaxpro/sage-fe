@@ -3,7 +3,7 @@ import Contact from "@/components/views/Contact";
 
 const ContactPage = () => {
     return (
-        <HomepageLayout title="Contact">
+        <HomepageLayout title="Contact Us">
             <Contact />
         </HomepageLayout>
     );

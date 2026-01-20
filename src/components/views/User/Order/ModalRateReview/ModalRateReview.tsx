@@ -14,14 +14,14 @@ import {
     Checkbox
 } from "@heroui/react";
 
-interface RateReviewModalProps {
+interface ModalRateReviewProps {
     isOpen: boolean;
     onClose: () => void;
     productName: string;
     onSubmit: (data: { rating: number; review: string; isAnonymous: boolean }) => void;
 }
 
-const RateReviewModal: React.FC<RateReviewModalProps> = ({ isOpen, onClose, productName, onSubmit }) => {
+const ModalRateReview: React.FC<ModalRateReviewProps> = ({ isOpen, onClose, productName, onSubmit }) => {
     const [rating, setRating] = useState<number | null>(null);
     const [review, setReview] = useState("");
     const [isAnonymous, setIsAnonymous] = useState(false);
@@ -161,4 +161,4 @@ const RateReviewModal: React.FC<RateReviewModalProps> = ({ isOpen, onClose, prod
     );
 };
 
-export default RateReviewModal;
+export default ModalRateReview;

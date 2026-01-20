@@ -25,6 +25,7 @@ import {
   Truck,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import AppBreadcrumbs, { BreadcrumbItemType } from "@/components/ui/AppBreadcrumbs/AppBreadcrumbs";
 
 const ProductDetail = ({
   // id 
@@ -56,25 +57,23 @@ const ProductDetail = ({
 
   const rating = 1
 
+  const breadcrumbItems: BreadcrumbItemType[] = [
+    {
+      label: 'Home',
+      href: '/'
+    },
+    {
+      label: 'Products',
+      href: '/product/list'
+    },
+    {
+      label: productData?.name
+    }
+  ];
+
   return (
     <Container className="flex-col gap-6 lg:gap-8 px-4 sm:px-6 lg:px-8 py-6">
-      <Breadcrumbs className="text-xs sm:text-sm text-primary">
-        <BreadcrumbItem
-          onClick={() => router.push("/")}
-          className="text-gray-400 cursor-pointer hover:text-primary"
-        >
-          Home
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          onClick={() => router.push("/product/list")}
-          className="text-gray-400 cursor-pointer hover:text-primary"
-        >
-          Product
-        </BreadcrumbItem>
-        <BreadcrumbItem className="text-gray-400 cursor-pointer hover:text-primary">
-          {productData?.name}
-        </BreadcrumbItem>
-      </Breadcrumbs>
+      <AppBreadcrumbs items={breadcrumbItems} />
 
       <div className="flex flex-col gap-6">
         {/* Product Information Container */}
@@ -176,7 +175,7 @@ const ProductDetail = ({
                 </div>
               </div>
 
-              <Divider className="bg-gray-200" />
+              <Divider className="bg-bordered" />
 
               {/* Features List */}
               <div className="flex flex-col gap-3">
@@ -200,7 +199,7 @@ const ProductDetail = ({
                 </div>
               </div>
 
-              <Divider className="bg-gray-200" />
+              <Divider className="bg-bordered" />
 
               {/* Benefits Section */}
               <div className="flex flex-col gap-4">
@@ -226,7 +225,7 @@ const ProductDetail = ({
                 </div>
               </div>
 
-              <Divider className="bg-gray-200" />
+              <Divider className="bg-bordered" />
 
               {/* Tags and SKU */}
               <div className="flex flex-col gap-2">
@@ -236,11 +235,11 @@ const ProductDetail = ({
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-primary text-base font-bold">SKU:</span>
-                  <span className="text-muted text-base font-bold">AU110876</span>
+                  <span className="text-muted text-base font-bold">{productData?.sku}</span>
                 </div>
               </div>
 
-              <Divider className="bg-gray-200" />
+              <Divider className="bg-bordered" />
 
               {/* Social Media Icons */}
               <div className="flex items-center gap-3">
@@ -281,7 +280,7 @@ const ProductDetail = ({
 
               {/* Price */}
               <h1 className="text-4xl font-bold text-primary">
-                $77.65
+                ${productData?.recommended_retail_price}
               </h1>
 
               {/* Color Selection */}
@@ -365,7 +364,7 @@ const ProductDetail = ({
                 <button
                   className="font-bold hover:underline transition-all text-primary"
                   onClick={() => {
-                    if(status === 'unauthenticated') return router.push('/auth/login')
+                    if (status === 'unauthenticated') return router.push('/auth/login')
                   }}
                 >
                   Add to wishlist
@@ -373,7 +372,7 @@ const ProductDetail = ({
                 <button
                   className="font-bold hover:underline transition-all text-primary"
                   onClick={() => {
-                    if(status === 'unauthenticated') return router.push('/auth/login')
+                    if (status === 'unauthenticated') return router.push('/auth/login')
                   }}
                 >
                   Add to compare

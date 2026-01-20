@@ -41,7 +41,7 @@ const FOOTER_MENUS = [
   {
     title: "Information",
     items: [
-      { label: "About us", href: "#" },
+      { label: "About us", href: "/about" },
       { label: "Delivery information", href: "#" },
       { label: "Privacy policy", href: "#" },
       { label: "Sales", href: "#" },
@@ -59,7 +59,7 @@ const FOOTER_MENUS = [
     items: [
       { label: "My account", href: "/user/profile" },
       { label: "My order", href: "/user/order" },
-      { label: "Return", href: "/product/my-address" },
+      { label: "Return", href: "/user/my-address" },
       { label: "Wishlist", href: "/user/wishlist" },
       { label: "Shipping", href: "/user/adress" },
     ],

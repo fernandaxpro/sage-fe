@@ -1,3 +1,5 @@
+import { BreadcrumbItemType } from "@/components/ui/AppBreadcrumbs/AppBreadcrumbs";
+
 const perPageOption = [
     {
         value: "10",
@@ -36,4 +38,14 @@ const sortByOption = [
     },
 ]
 
-export { perPageOption, sortByOption }
+const breadcrumbItems: BreadcrumbItemType[] = [
+    {
+      label: 'Home',
+      href: '/'
+    },
+    {
+      label: 'Products',
+    },
+  ];
+
+export { perPageOption, sortByOption, breadcrumbItems }

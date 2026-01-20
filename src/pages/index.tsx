@@ -3,7 +3,7 @@ import Home from "@/components/views/Home"
 
 const HomePage = () => {
   return (
-    <HomepageLayout title="Sage Games | Home">
+    <HomepageLayout title="Home">
       <Home />
     </HomepageLayout>
   )

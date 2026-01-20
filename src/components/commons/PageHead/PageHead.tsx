@@ -5,13 +5,13 @@ interface PropTypes {
 }
 
 const PageHead = (props: PropTypes) => {
-    const { title = 'Sage Games' } = props
+    const { title = 'Home' } = props
 
     return (
         <Head>
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>{title}</title>
+            <title>{title} | Sage Gaming</title>
             <link
                 rel="icon"
                 href="/images/general/favicon.ico"

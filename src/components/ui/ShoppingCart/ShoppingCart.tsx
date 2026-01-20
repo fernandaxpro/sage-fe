@@ -8,7 +8,7 @@ import {
     CardBody,
     Image,
 } from "@heroui/react";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import React from "react";
 import { 
     FaRegHeart, 
@@ -33,7 +33,8 @@ interface CartItem {
 }
 
 const ShoppingCart = ({ isOpen, onOpenChange, triggerButton }: PropTypes) => {
-    // Dummy cart data
+    const router = useRouter()
+
     const cartItems: CartItem[] = [
         {
             id: 1,
@@ -183,7 +184,13 @@ const ShoppingCart = ({ isOpen, onOpenChange, triggerButton }: PropTypes) => {
                                         View Cart
                                     </Button>
 
-                                    <Button radius="full" variant="solid" className="text-white px-[65px] py-[15px] bg-primary text-[20px] font-semibold border-[1px]" onPress={onClose}>
+                                    <Button 
+                                        radius="full" 
+                                        variant="solid" 
+                                        className="text-white px-[65px] py-[15px] bg-primary text-[20px] font-semibold border-[1px]" 
+                                        onPress={() => router.push('/user/order')}
+                                        
+                                        >
                                         Checkout
                                     </Button>
                                 </div>

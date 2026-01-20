@@ -2,7 +2,7 @@
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { JSX } from "react";
-import { FaUser, FaHeart, FaMapMarkerAlt, FaSignOutAlt } from "react-icons/fa";
+import { FaUser, FaHeart, FaMapMarkerAlt, FaSignOutAlt, FaShoppingCart } from "react-icons/fa";
 
 interface UserSidebarProps {
     activeItem: string;
@@ -21,10 +21,10 @@ const UserSidebar = ({ activeItem }: UserSidebarProps) => {
         { label: "My Profile", icon: <FaUser />, type: "link", href: "/user/profile" },
         { label: "My Addresses", icon: <FaMapMarkerAlt />, type: "link", href: "/user/address" },
         { label: "My Wishlist", icon: <FaHeart />, type: "link", href: "/user/wishlist" },
-        { label: "Logout", icon: <FaSignOutAlt />, type: "button", onClick: () => signOut({ callbackUrl: "/" }) },
-        // { label: "My Orders", icon: <FaShoppingCart />, type: "link", href: "/product/my-order" },
+        { label: "My Orders", icon: <FaShoppingCart />, type: "link", href: "/user/order" },
         // { label: "My Reviews", icon: <FaCommentAlt />, type: "link", href: "/product/my-review" },
         // { label: "Trade Account", icon: <FaFileAlt />, type: "link", href: "/trade-account" },
+        { label: "Logout", icon: <FaSignOutAlt />, type: "button", onClick: () => signOut({ callbackUrl: "/" }) },
     ];
 
     const baseClassName = "flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-colors text-sm font-medium";

@@ -3,7 +3,7 @@ import Register from "@/components/views/Auth/Register"
 
 const RegisterPage = () => {
   return (
-    <AuthLayout title="Alarm Expert | Register">
+    <AuthLayout title="Register">
         <Register />
     </AuthLayout>
   )

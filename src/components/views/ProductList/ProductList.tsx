@@ -3,9 +3,7 @@
 
 import { useState } from "react";
 import { 
-    Pagination, 
-    Breadcrumbs, 
-    BreadcrumbItem, 
+    Pagination,  
     Select, 
     SelectItem 
 } from "@heroui/react";
@@ -22,11 +20,11 @@ import {
     brands,
 } from "@/data/products";
 
-import { useRouter } from "next/router";
 import useProductList from "./useProductList";
 import FilterSidebar from "./FilterSidebar";
 import ProductCard from "./ProductCard";
-import { perPageOption, sortByOption } from "./ProductList.constant";
+import { breadcrumbItems, perPageOption, sortByOption } from "./ProductList.constant";
+import AppBreadcrumbs from "@/components/ui/AppBreadcrumbs";
 
 const ProductList = () => {
     const [priceRange, setPriceRange] = useState<number | number[]>([0, 50000]);
@@ -36,7 +34,6 @@ const ProductList = () => {
     const [perPage, setPerPage] = useState(10);
     const [showAllBrands, setShowAllBrands] = useState(false);
     const [showMobileFilter, setShowMobileFilter] = useState(false);
-    const router = useRouter();
     const visibleBrands = showAllBrands ? brands : brands.slice(0, 8);
 
     const {
@@ -91,14 +88,7 @@ const ProductList = () => {
 
             <Container className="flex-col gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-6 lg:px-8">
                 {/* Breadcrumb */}
-                <Breadcrumbs className="text-xs sm:text-sm text-gray-500">
-                    <BreadcrumbItem onClick={() => router.push('/')} className="text-gray-400 cursor-pointer hover:text-primary">
-                        Home
-                    </BreadcrumbItem>
-                    <BreadcrumbItem className="text-gray-400 cursor-pointer hover:text-primary">
-                        Product
-                    </BreadcrumbItem>
-                </Breadcrumbs>
+                 <AppBreadcrumbs items={breadcrumbItems} />
 
                 {/* Page Title & Mobile Filter Button */}
                 <div className="flex items-center justify-between">
@@ -225,7 +215,7 @@ const ProductList = () => {
                                 } gap-2 sm:gap-3 lg:gap-4 mb-6 sm:mb-8`}>
                                 {productList?.data?.map((product: any) => (
                                     <div key={product.id} className="relative">
-                                        <ProductCard data={product} />
+                                        <ProductCard data={product} isOverlayButton={true} />
                                     </div>
                                 ))}
                             </div>

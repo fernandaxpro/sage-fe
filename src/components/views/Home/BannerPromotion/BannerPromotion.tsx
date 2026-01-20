@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Container from "@/components/ui/Container";
 import { Button, Chip } from "@heroui/react";
 

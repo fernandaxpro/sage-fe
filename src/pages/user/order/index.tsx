@@ -1,10 +1,10 @@
 import HomepageLayout from "@/components/layouts/HomepageLayout";
-import MyOrder from "@/components/views/MyOrder";
+import Order from "@/components/views/User/Order";
 
 const MyOrderPage = () => {
     return (
         <HomepageLayout title="My Orders">
-            <MyOrder />
+            <Order />
         </HomepageLayout>
     );
 };

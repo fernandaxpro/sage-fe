@@ -7,7 +7,7 @@ import { FaChevronDown } from "react-icons/fa";
 import {
     NAV_LINKS,
     NAV_CATEGORIES,
-    AUTH_BUTTONS,
+    // AUTH_BUTTONS,
     USER_ACTION_BUTTONS,
 } from "../HomepageLayout.constants";
 import { POPUP_CONTENT, BrandItem } from "./HomepageLayoutNavbarPopupHover/HomepageLayoutPopupHover.constants";

@@ -4,11 +4,11 @@ import { useState } from "react";
 import { Button, Image, Tabs, Tab } from "@heroui/react";
 import Container from "@/components/ui/Container";
 import UserSidebar from "@/components/views/User/UserSidebar/UserSidebar";
-import RateReviewModal from "./RateReviewModal";
 
 import { dummyUser } from "@/data/users";
+import ModalRateReview from "./ModalRateReview/ModalRateReview";
 
-const MyOrder = () => {
+const Order = () => {
     const orders = dummyUser.orders;
     const [selectedTab, setSelectedTab] = useState("orders");
     const [isRateModalOpen, setIsRateModalOpen] = useState(false);
@@ -39,7 +39,11 @@ const MyOrder = () => {
 
             {/* Main Content */}
             <div className="flex-1">
-                <h1 className="text-2xl font-bold text-gray-900 mb-6">My Orders</h1>
+                <h1 
+                    className="text-2xl font-bold text-gray-900 mb-6"
+                >
+                    My Orders
+                </h1>
 
                 <Tabs
                     selectedKey={selectedTab}
@@ -134,7 +138,7 @@ const MyOrder = () => {
                     )}
                 </div>
             </div>
-            <RateReviewModal
+            <ModalRateReview
                 isOpen={isRateModalOpen}
                 onClose={() => setIsRateModalOpen(false)}
                 productName={selectedProduct}
@@ -144,4 +148,4 @@ const MyOrder = () => {
     );
 };
 
-export default MyOrder;
+export default Order;

@@ -28,7 +28,6 @@ interface PropTypes {
 
 const CardProductModal = (props: PropTypes) => {
   const { isOpen, onClose, data } = props;
-
   return (
     <Modal isOpen={isOpen} size="5xl" onOpenChange={onClose}>
       <ModalContent>
@@ -56,7 +55,7 @@ const CardProductModal = (props: PropTypes) => {
                       <SwiperSlide key={index}>
                         <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
                           <Image
-                            src={item.url}
+                            src={item.url ?? data?.thumbnail_image}
                             alt={`Product image ${index + 1}`}
                             className="w-full h-full object-contain cursor-pointer"
                             onClick={() =>
@@ -71,16 +70,16 @@ const CardProductModal = (props: PropTypes) => {
               </div>
 
               <div className="flex-1 flex flex-col gap-4">
-                <h1 className="text-3xl font-bold text-primary">{data.name}</h1>
+                <h1 className="text-3xl font-bold text-primary">{data.name ?? data?.product_name}</h1>
 
                 <div className="flex items-center text-yellow-400 gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <FaStar
                       key={i}
                       size={14}
-                      fill={i < Math.floor(data.rating) ? "#FFD700" : "#E5E7EB"}
+                      fill={i < Math.floor(data.stars) ? "#FFD700" : "#E5E7EB"}
                       className={
-                        i < Math.floor(data.rating)
+                        i < Math.floor(data.stars)
                           ? "text-yellow-400"
                           : "text-gray-200"
                       }
@@ -89,7 +88,7 @@ const CardProductModal = (props: PropTypes) => {
                 </div>
 
                 <h1 className="text-2xl font-bold text-primary">
-                  ${data.recommended_retail_price}
+                  ${data?.recommended_retail_price ?? data?.price}
                 </h1>
 
                 <Divider className="my-4" />

@@ -3,7 +3,7 @@ import Cart from "@/components/views/Cart"
 
 const index = () => {
   return (
-    <HomepageLayout title="Alarm Expert | Shopping Cart">
+    <HomepageLayout title="Cart">
         <Cart />
     </HomepageLayout>
   )
