@@ -1,2 +1,2 @@
-import AppBreadcrumbs from "./AppBreadcrumbs";
-export default AppBreadcrumbs;
+export { default } from "./AppBreadcrumbs";
+export * from "./AppBreadcrumbs";

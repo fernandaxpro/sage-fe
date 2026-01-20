@@ -1,4 +1,4 @@
-import AppBreadcrumbs, { BreadcrumbItemType } from '@/components/ui/AppBreadcrumbs/AppBreadcrumbs';
+import AppBreadcrumbs, { BreadcrumbItemType } from '@/components/ui/AppBreadcrumbs';
 import Container from '@/components/ui/Container'
 import React from 'react'
 
