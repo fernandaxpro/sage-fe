@@ -6,7 +6,7 @@ import { Button, Checkbox, Input } from "@heroui/react"
 import { dummyProducts } from "@/data/products"
 import { Product } from "@/types"
 import CartItem from "./CardItem/CardItem"
-import { useRouter } from "next/router"
+// import { useRouter } from "next/router"
 
 interface CartItemData extends Product {
     quantity: number;
@@ -15,7 +15,7 @@ interface CartItemData extends Product {
 
 
 const Cart = () => {
-    const router = useRouter()
+    // const router = useRouter()
     // Initialize with first 3 products
     const [cartItems, setCartItems] = useState<CartItemData[]>(
         dummyProducts.slice(0, 3).map(p => ({

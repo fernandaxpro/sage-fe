@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useContext, useEffect, useRef } from "react";
-import { ToasterContext } from "@/contexts/ToasterContext";
+import { 
+    // useContext, 
+    useEffect, 
+    useRef 
+} from "react";
+// import { ToasterContext } from "@/contexts/ToasterContext";
 import { useForm } from "react-hook-form";
 
 const checkoutSchema: yup.ObjectSchema<any> = yup.object().shape({
@@ -23,7 +27,7 @@ const checkoutSchema: yup.ObjectSchema<any> = yup.object().shape({
 });
 
 const useCheckout = () => {
-    const { setToaster } = useContext(ToasterContext);
+    // const { setToaster } = useContext(ToasterContext);
 
     const prevCountryRef = useRef<string | number>("");
     const prevStateRef = useRef<string | number>("");

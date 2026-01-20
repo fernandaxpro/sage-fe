@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Image, Breadcrumbs, BreadcrumbItem, Button, Chip, Divider } from "@heroui/react";
+import { Image, Button, Chip, Divider } from "@heroui/react";
 import { FaStar } from "react-icons/fa";
 import { FaFacebookF, FaInstagram, FaMinus, FaPlus, FaXTwitter } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa6";

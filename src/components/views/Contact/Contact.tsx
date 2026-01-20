@@ -1,10 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Input, Textarea, Button, Divider } from "@heroui/react";
-import { LuPhone, LuMail, LuMapPin, LuClock } from "react-icons/lu";
 import Container from "@/components/ui/Container";
-import Link from "next/link";
 import AppBreadcrumbs from "@/components/ui/AppBreadcrumbs";
 import { ContactBreadcrumbs } from "./Contact.constant";
 import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
