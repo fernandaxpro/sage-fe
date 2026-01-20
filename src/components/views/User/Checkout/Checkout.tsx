@@ -161,10 +161,10 @@ const Checkout = () => {
                                                 onSelectionChange={(key) => {
                                                     field.onChange(key ? String(key) : "");
                                                 }}
-                                                onClear={() => {
-                                                    field.onChange("");
-                                                }}
-                                                isClearable
+                                                // onClear={() => {
+                                                //     field.onChange("");
+                                                // }}
+                                                // isClearable
                                                 allowsCustomValue={false}
                                             >
                                                 {countriesList?.map((country) => (
@@ -192,10 +192,10 @@ const Checkout = () => {
                                                 onSelectionChange={(key) => {
                                                     field.onChange(key ? String(key) : "");
                                                 }}
-                                                onClear={() => {
-                                                    field.onChange("");
-                                                }}
-                                                isClearable
+                                                // onClear={() => {
+                                                //     field.onChange("");
+                                                // }}
+                                                // isClearable
                                                 allowsCustomValue={false}
                                             >
                                                 {statesList.map((state) => (
@@ -223,10 +223,10 @@ const Checkout = () => {
                                                 onSelectionChange={(key) => {
                                                     field.onChange(key ? String(key) : "");
                                                 }}
-                                                onClear={() => {
-                                                    field.onChange("");
-                                                }}
-                                                isClearable
+                                                // onClear={() => {
+                                                //     field.onChange("");
+                                                // }}
+                                                // isClearable
                                                 allowsCustomValue={false}
                                             >
                                                 {citiesList.map((city) => (
