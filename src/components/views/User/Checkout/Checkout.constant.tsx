@@ -6,8 +6,8 @@ const CheckoutBreadcrumbs: BreadcrumbItemType[] = [
       href: '/'
     },
     {
-      label: 'Products',
-      href: '/product/list'
+      label: 'My Orders',
+      href: '/user/order'
     },
     {
       label: 'Checkout',

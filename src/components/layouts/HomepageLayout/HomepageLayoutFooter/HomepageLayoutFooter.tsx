@@ -66,11 +66,11 @@ const HomepageLayoutFooter = () => {
               <div className="flex gap-4 items-start">
                 <span><Phone className="text-success font-bold" /></span>
                 <div className="flex flex-col gap-5">
-                  <h1 className="text-primary font-bold text-lg md:text-2xl">0020 500 - SAGE GAMES - 00</h1>
+                  <h1 className="text-primary font-bold text-lg md:text-2xl">0020 500 - SAGE GAMING - 00</h1>
 
                   <div className="flex flex-col gap-2">
-                    <p className="text- font-bold text-base md:text-lg">Monday - Friday: 9:00 - 20:00</p>
-                    <p className="text- font-bold text-base md:text-lg">Saturday: 11:00 - 15:00</p>
+                    <p className="text-muted font-bold text-base md:text-lg">Monday - Friday: 9:00 - 20:00</p>
+                    <p className="text-muted font-bold text-base md:text-lg">Saturday: 11:00 - 15:00</p>
                   </div>
                 </div>
               </div>

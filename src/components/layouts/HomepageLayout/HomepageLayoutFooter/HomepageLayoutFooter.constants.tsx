@@ -57,11 +57,11 @@ const FOOTER_MENUS = [
   {
     title: "Account",
     items: [
-      { label: "My account", href: "/user/profile" },
-      { label: "My order", href: "/user/order" },
-      { label: "Return", href: "/user/my-address" },
+      { label: "Profile", href: "/user/profile" },
+      { label: "Order", href: "/user/order" },
+      { label: "Address", href: "/user/address" },
       { label: "Wishlist", href: "/user/wishlist" },
-      { label: "Shipping", href: "/user/adress" },
+      // { label: "Shipping", href: "/user/adress" },
     ],
   },
   {

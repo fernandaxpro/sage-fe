@@ -47,7 +47,7 @@ export interface OrderItem {
 export interface Order {
     id: string;
     date: string;
-    status: "Delivered" | "In Process" | "Cancelled";
+    status: "Delivered" | "In Process" | "Cancelled" | "Not Payment";
     items: OrderItem[];
     total: number;
 }

@@ -61,7 +61,7 @@ const TabsProductDetail = (props: PropTypes) => {
           ) : (
             <div className="flex flex-col items-center justify-center gap-4">
               <CircleOff size={48} className="text-muted" />
-              <p className="text- text-base">No description available for this product</p>
+              <p className="text-muted text-center text-base">No description available for this product</p>
             </div>
           )}
         </div>

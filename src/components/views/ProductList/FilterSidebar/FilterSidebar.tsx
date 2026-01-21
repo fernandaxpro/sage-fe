@@ -1,13 +1,17 @@
-import { Button, Checkbox, Slider } from "@heroui/react";
+import { Button, Checkbox, Chip, Select, Selection, SelectItem, Slider } from "@heroui/react";
 import { FaTimes } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 import {
-    // dummyProducts, 
     brands,
     ratingCounts
 } from "@/data/products";
+import { ISelectOption } from "@/types/Product";
 
 const FilterSidebar = ({
+    dataCategories,
+    selectedCategories,
+    onCategoryChange,
+
     priceRange,
     setPriceRange,
     selectedBrands,
@@ -18,6 +22,10 @@ const FilterSidebar = ({
     isMobile = false,
     onClose,
 }: {
+    dataCategories: ISelectOption[];
+    selectedCategories: number[];
+    onCategoryChange: (categoryIds: number[]) => void;
+
     priceRange: number | number[];
     setPriceRange: (value: number | number[]) => void;
     selectedBrands: string[];
@@ -27,7 +35,22 @@ const FilterSidebar = ({
     visibleBrands: string[];
     isMobile?: boolean;
     onClose?: () => void;
+
 }) => {
+    const handleSelectionChange = (keys: Selection) => {
+        if (keys === "all") {
+            const allIds = dataCategories?.map(cat => cat.value) || [];
+            onCategoryChange(allIds);
+        } else if (keys instanceof Set) {
+            const categoryIds = Array.from(keys).map(key => Number(key));
+            onCategoryChange(categoryIds);
+        } else {
+            onCategoryChange([]);
+        }
+    };
+
+    const selectedKeys = new Set(selectedCategories.map(id => String(id)));
+
     return (
         <div className={`space-y-6 ${isMobile ? "p-4" : ""}`}>
             {/* Mobile Header */}
@@ -41,7 +64,67 @@ const FilterSidebar = ({
             )}
 
             {/* Filters Title - Desktop */}
-            {!isMobile && <h2 className="text-lg font-semibold text-primary">Filters</h2>}
+            {!isMobile && <h2 className="text-lg font-semibold text-primary mb-10">Filters</h2>}
+
+            <div className="space-y-3">
+                <Select
+                    size="sm"
+                    radius="full"
+                    label="Categories"
+                    labelPlacement="outside"
+                    placeholder="Select categories"
+                    selectionMode="multiple"
+                    selectedKeys={selectedKeys}
+                    onSelectionChange={handleSelectionChange}
+                    classNames={{
+                        label: "font-semibold !text-primary text-sm sm:text-base",
+                        value: "!text-primary font-medium",
+                        trigger: "!text-primary", 
+                    }}
+                    renderValue={(items) => {
+                        if (items.length === 0) {
+                            return "Select categories";
+                        }
+                        if (items.length === 1) {
+                            return items[0].textValue;
+                        }
+                        return `${items.length} categories selected`;
+                    }}
+                >
+                    {dataCategories?.map((item) => (
+                        <SelectItem key={String(item.value)}>
+                            {item.label}
+                        </SelectItem>
+                    )) || []}
+                </Select>
+
+                {selectedCategories.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                        {selectedCategories.map(categoryId => {
+                            const category = dataCategories?.find(cat => cat.value === categoryId);
+                            return category ? (
+                                <Chip
+                                    key={categoryId}
+                                    onClose={() => {
+                                        const newCategories = selectedCategories.filter(id => id !== categoryId);
+                                        onCategoryChange(newCategories);
+                                    }}
+                                    variant="flat"
+                                    size="sm"
+                                    classNames={{
+                                        base: "bg-secondary",
+                                        content: "text-primary text-base font-medium",
+                                        closeButton: "text-primary hover:bg-primary/20"
+                                    }}
+                                >
+                                    {category.label}
+                                </Chip>
+                            ) : null;
+                        })}
+                    </div>
+                )}
+            </div>
+
 
             {/* On Sale */}
             <div>

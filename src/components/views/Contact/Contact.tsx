@@ -49,7 +49,7 @@ const Contact = () => {
 
                     <div className="flex flex-col gap-4">
                         <h1 className="text-primary font-semibold text-xl">
-                            {"0020 500 - MYMEDI - 000"}
+                            {"0020 500 - SAGE GAMING - 000"}
                         </h1>
                         <div className="flex flex-col gap-2">
                             <p className="text-muted font-medium text-base">{"Monday - Friday: 9:00-20:00"}</p>

@@ -57,7 +57,7 @@ const Address = () => {
                 <h1 className="text-2xl font-bold text-primary mb-6">My Addresses</h1>
 
                 {/* Top Action Bar */}
-                <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
+                {/* <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
                     <Input
                         placeholder="Search your address here"
                         startContent={<FaSearch className="text-primary" />}
@@ -69,15 +69,15 @@ const Address = () => {
                         className="w-full sm:max-w-md"
                     />
 
-                    {/* <Button
+                    <Button
                         className="bg-primary text-secondary font-medium"
                         startContent={<FaPlus />}
                         radius="full"
                         onPress={handleAddAddress}
                     >
                         Add New Address
-                    </Button> */}
-                </div>
+                    </Button>
+                </div> */}
 
                 {/* Address List */}
                 <div className="space-y-4 flex flex-col gap-6">

@@ -7,8 +7,10 @@ import UserSidebar from "@/components/views/User/UserSidebar/UserSidebar";
 
 import { dummyUser } from "@/data/users";
 import ModalRateReview from "./ModalRateReview/ModalRateReview";
+import { useRouter } from "next/router";
 
 const Order = () => {
+    const router = useRouter()
     const orders = dummyUser.orders;
     const [selectedTab, setSelectedTab] = useState("orders");
     const [isRateModalOpen, setIsRateModalOpen] = useState(false);
@@ -25,9 +27,14 @@ const Order = () => {
     };
 
     const getFilteredOrders = () => {
-        if (selectedTab === "shipped") return orders.filter(o => o.status === "In Process");
-        if (selectedTab === "cancelled") return orders.filter(o => o.status === "Cancelled");
-        return orders.filter(o => o.status === "Delivered");
+        if (selectedTab === "shipped") {
+            return orders.filter(o => o.status === "In Process");
+        }
+        if (selectedTab === "cancelled") {
+            return orders.filter(o => o.status === "Cancelled");
+        }
+        // Tab orders: tampilkan Delivered dan Not Payment
+        return orders.filter(o => o.status === "Delivered" || o.status === "Not Payment");
     };
 
     const filteredOrders = getFilteredOrders();
@@ -39,7 +46,7 @@ const Order = () => {
 
             {/* Main Content */}
             <div className="flex-1">
-                <h1 
+                <h1
                     className="text-2xl font-bold text-gray-900 mb-6"
                 >
                     My Orders
@@ -49,13 +56,7 @@ const Order = () => {
                     selectedKey={selectedTab}
                     onSelectionChange={(key) => setSelectedTab(key as string)}
                     variant="light"
-                    classNames={{
-                        tabList: "gap-4 p-0",
-                        cursor: "bg-primary text-white",
-                        tab: "border border-gray-300 rounded-full px-6 h-9 data-[selected=true]:border-primary data-[selected=true]:bg-primary data-[selected=true]:text-white text-gray-600",
-                        tabContent: "font-medium group-data-[selected=true]:text-white",
-                        panel: "pt-6"
-                    }}
+                    className="text-primary"
                 >
                     <Tab key="orders" title="Orders" />
                     <Tab key="shipped" title="Not Yet Shipped" />
@@ -71,9 +72,13 @@ const Order = () => {
                                         <span>{order.date}</span>
                                         <span>{order.id}</span>
                                     </div>
-                                    <span className={`px-4 py-1 rounded-full text-xs font-medium border ${order.status === "Delivered" ? "bg-blue-50 text-blue-600 border-blue-200" :
-                                        order.status === "In Process" ? "bg-orange-50 text-orange-600 border-orange-200" :
-                                            "bg-red-50 text-red-600 border-red-200"
+                                    <span className={`px-4 py-1 rounded-full text-xs font-medium border ${order.status === "Delivered"
+                                        ? "bg-blue-50 text-blue-600 border-blue-200" :
+                                        order.status === "In Process"
+                                            ? "bg-orange-50 text-orange-600 border-orange-200" :
+                                            order.status === "Not Payment"
+                                                ? "bg-yellow-50 text-yellow-600 border-yellow-200" :
+                                                "bg-red-50 text-red-600 border-red-200"
                                         }`}>
                                         {order.status}
                                     </span>
@@ -102,7 +107,25 @@ const Order = () => {
                                 </div>
 
                                 <div className="flex flex-wrap justify-end gap-3 pt-6 border-t border-[#E4E4E4]">
-                                    {order.status !== "In Process" && (
+                                    {order.status === "Not Payment" && (
+                                        <>
+                                            <Button
+                                                variant="bordered"
+                                                radius="full"
+                                                className="border-[#0F2744] text-[#0F2744] font-medium"
+                                            >
+                                                Cancel Order
+                                            </Button>
+                                            <Button
+                                                className="bg-[#0F2744] text-white font-medium"
+                                                radius="full"
+                                                onPress={() => router.push('/user/checkout')}
+                                            >
+                                                Pay Now
+                                            </Button>
+                                        </>
+                                    )}
+                                    {order.status !== "In Process" && order.status !== 'Not Payment' && (
                                         <Button
                                             variant="bordered"
                                             radius="full"
@@ -138,6 +161,7 @@ const Order = () => {
                     )}
                 </div>
             </div>
+
             <ModalRateReview
                 isOpen={isRateModalOpen}
                 onClose={() => setIsRateModalOpen(false)}

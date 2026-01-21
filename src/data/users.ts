@@ -35,6 +35,20 @@ export const dummyUser: User = {
         {
             id: "ORD-89274927",
             date: "November 11, 2025",
+            status: "Not Payment",
+            items: [
+                {
+                    name: "Hikvision Wireless Outdoor Sounder DS-PS1-E-WB",
+                    image: "/images/products/Hikvision Wireless Outdoor Sounder DS-PS1-E-WB.png",
+                    qty: 1,
+                    price: 79.00
+                }
+            ],
+            total: 79.00
+        },
+        {
+            id: "ORD-89274927",
+            date: "November 11, 2025",
             status: "Delivered",
             items: [
                 {

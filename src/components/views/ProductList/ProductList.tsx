@@ -2,12 +2,13 @@
 "use client";
 
 import { useState } from "react";
-import { 
-    Pagination,  
-    Select, 
-    SelectItem 
+import {
+    Pagination,
+    Select,
+    SelectItem
 } from "@heroui/react";
-import { FaThLarge, FaList, FaFilter } from "react-icons/fa";
+import { FaFilter } from "react-icons/fa";
+import { TfiLayoutGrid2Alt, TfiLayoutGrid3Alt, TfiLayoutGrid4Alt, TfiLayoutListThumbAlt } from "react-icons/tfi";
 import Container from "@/components/ui/Container";
 import {
     PaginationSkeleton,
@@ -27,21 +28,34 @@ import { breadcrumbItems, perPageOption, sortByOption } from "./ProductList.cons
 import AppBreadcrumbs from "@/components/ui/AppBreadcrumbs";
 
 const ProductList = () => {
-    const [priceRange, setPriceRange] = useState<number | number[]>([0, 50000]);
     const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-    const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+
+    const [priceRange, setPriceRange] = useState<number | number[]>([0, 50000]);
+    const [viewMode, setViewMode] = useState<"list" | "grid-2" | "grid-3" | "grid-4">("grid-3");
     const [currentPage, setCurrentPage] = useState(1);
-    const [perPage, setPerPage] = useState(10);
+    const [perPage, setPerPage] = useState(100);
     const [showAllBrands, setShowAllBrands] = useState(false);
     const [showMobileFilter, setShowMobileFilter] = useState(false);
     const visibleBrands = showAllBrands ? brands : brands.slice(0, 8);
 
     const {
+        dataCategories,
         productList,
         isLoadingProductList,
         // error,
         // refetchProductList,
-    } = useProductList({ page: currentPage, perPage })
+    } = useProductList({
+        page: currentPage,
+        perPage,
+        categoryIds: selectedCategories.length > 0 ? selectedCategories : undefined,
+        brandIds: undefined
+    })
+
+    const handleCategoryChange = (categoryIds: number[]) => {
+        setSelectedCategories(categoryIds);
+        setCurrentPage(1); // Reset ke page 1 saat filter berubah
+    };
 
     const handleBrandChange = (brand: string, checked: boolean) => {
         if (checked) {
@@ -61,6 +75,21 @@ const ProductList = () => {
         setCurrentPage(1);
     };
 
+    const getGridClass = () => {
+        switch (viewMode) {
+            case "list":
+                return "grid-cols-1";
+            case "grid-2":
+                return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2";
+            case "grid-3":
+                return "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3";
+            case "grid-4":
+                return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4";
+            default:
+                return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5";
+        }
+    };
+
     return (
         <>
             {/* Mobile Filter Overlay */}
@@ -72,6 +101,10 @@ const ProductList = () => {
                     />
                     <div className="absolute right-0 top-0 h-full w-[300px] max-w-[85vw] bg-white overflow-y-auto">
                         <FilterSidebar
+                            dataCategories={dataCategories}
+                            selectedCategories={selectedCategories}
+                            onCategoryChange={handleCategoryChange}
+
                             priceRange={priceRange}
                             setPriceRange={setPriceRange}
                             selectedBrands={selectedBrands}
@@ -88,7 +121,7 @@ const ProductList = () => {
 
             <Container className="flex-col gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-6 lg:px-8">
                 {/* Breadcrumb */}
-                 <AppBreadcrumbs items={breadcrumbItems} />
+                <AppBreadcrumbs items={breadcrumbItems} />
 
                 {/* Page Title & Mobile Filter Button */}
                 <div className="flex items-center justify-between">
@@ -107,6 +140,10 @@ const ProductList = () => {
                     <div className="hidden lg:block w-[220px] xl:w-[250px] flex-shrink-0">
                         <div className="sticky top-4">
                             <FilterSidebar
+                                dataCategories={dataCategories}
+                                selectedCategories={selectedCategories}
+                                onCategoryChange={handleCategoryChange}
+
                                 priceRange={priceRange}
                                 setPriceRange={setPriceRange}
                                 selectedBrands={selectedBrands}
@@ -136,16 +173,28 @@ const ProductList = () => {
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 border-t border-b border-bordered py-3 sm:py-4 gap-3 sm:gap-0">
                             <div className="flex items-center gap-2 sm:gap-4">
                                 <button
-                                    onClick={() => setViewMode("grid")}
-                                    className={`p-1.5 sm:p-2 rounded ${viewMode === "grid" ? "bg-gray-200" : "hover:bg-gray-100"}`}
-                                >
-                                    <FaThLarge size={14} className={`sm:w-4 sm:h-4 ${viewMode === "grid" ? "text-primary" : "text-gray-400"}`} />
-                                </button>
-                                <button
                                     onClick={() => setViewMode("list")}
                                     className={`p-1.5 sm:p-2 rounded ${viewMode === "list" ? "bg-gray-200" : "hover:bg-gray-100"}`}
                                 >
-                                    <FaList size={14} className={`sm:w-4 sm:h-4 ${viewMode === "list" ? "text-primary" : "text-gray-400"}`} />
+                                    <TfiLayoutListThumbAlt size={14} className={`sm:w-4 sm:h-4 ${viewMode === "list" ? "text-primary" : "text-gray-400"}`} />
+                                </button>
+                                <button
+                                    onClick={() => setViewMode("grid-2")}
+                                    className={`p-1.5 sm:p-2 rounded ${viewMode === "grid-2" ? "bg-gray-200" : "hover:bg-gray-100"}`}
+                                >
+                                    <TfiLayoutGrid2Alt size={14} className={`sm:w-4 sm:h-4 ${viewMode === "grid-2" ? "text-primary" : "text-gray-400"}`} />
+                                </button>
+                                <button
+                                    onClick={() => setViewMode("grid-3")}
+                                    className={`p-1.5 sm:p-2 rounded ${viewMode === "grid-3" ? "bg-gray-200" : "hover:bg-gray-100"}`}
+                                >
+                                    <TfiLayoutGrid3Alt size={14} className={`sm:w-4 sm:h-4 ${viewMode === "grid-3" ? "text-primary" : "text-gray-400"}`} />
+                                </button>
+                                <button
+                                    onClick={() => setViewMode("grid-4")}
+                                    className={`p-1.5 sm:p-2 rounded ${viewMode === "grid-4" ? "bg-gray-200" : "hover:bg-gray-100"}`}
+                                >
+                                    <TfiLayoutGrid4Alt size={14} className={`sm:w-4 sm:h-4 ${viewMode === "grid-4" ? "text-primary" : "text-gray-400"}`} />
                                 </button>
                             </div>
 
@@ -176,16 +225,17 @@ const ProductList = () => {
                                 </div>
                                 <div className="flex items-center gap-1.5 sm:gap-2">
                                     <Select
-                                        className="w-auto min-w-[60px]"
+                                        className="w-auto min-w-[80px]"
                                         size="sm"
                                         label="Show"
                                         labelPlacement="outside-left"
                                         onChange={handlePerPageChange}
-                                        defaultSelectedKeys={["10"]}
+                                        // defaultSelectedKeys={[perPage]}
+                                        selectedKeys={[String(perPage)]}
                                         classNames={{
                                             base: "gap-1",
                                             mainWrapper: "w-auto",
-                                            trigger: "min-w-[60px] w-auto",
+                                            trigger: "min-w-[80px] w-auto",
                                             popoverContent: "w-auto min-w-full",
                                         }}
                                     >
@@ -200,26 +250,23 @@ const ProductList = () => {
 
                         {/* Product Grid */}
                         {isLoadingProductList ? (
-                            <div className={`grid ${viewMode === "grid"
-                                ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5"
-                                : "grid-cols-1"
-                                } gap-2 sm:gap-3 lg:gap-4 mb-6 sm:mb-8`}>
+                            <div className={`grid ${getGridClass()} gap-2 sm:gap-3 lg:gap-4 mb-6 sm:mb-8`}>
                                 {[...Array(perPage)].map((_, index) => (
                                     <ProductCardSkeleton key={index} />
                                 ))}
                             </div>
                         ) : (
-                            <div className={`grid ${viewMode === "grid"
-                                ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5"
-                                : "grid-cols-1"
-                                } gap-2 sm:gap-3 lg:gap-4 mb-6 sm:mb-8`}>
+                            <div className={`grid ${getGridClass()} mb-6 sm:mb-8`}>
                                 {productList?.data?.map((product: any) => (
                                     <div key={product.id} className="relative">
-                                        <ProductCard data={product} isOverlayButton={true} />
+                                        <ProductCard
+                                            data={product}
+                                            isOverlayButton={viewMode !== "list"}
+                                            isListView={viewMode === "list"}
+                                        />
                                     </div>
                                 ))}
                             </div>
-
                         )}
 
                         {/* Pagination */}

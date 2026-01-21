@@ -36,6 +36,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Search } from "lucide-react";
 import { useRouter } from "next/router";
 import { SOCIAL_LINKS } from "./HomePageLayoutNavbar.constants";
+import { useWishlist } from "@/hooks/useWishlist";
 
 const HomepageLayoutNavbar = () => {
   const { data: session, status } = useSession();
@@ -59,17 +60,17 @@ const HomepageLayoutNavbar = () => {
     isPendingLogin,
     errors,
   } = useHomepageLayoutNavbar({ session, status });
+  const { wishlistCount } = useWishlist();
   const currentPath = router.pathname;
 
   const [cartCount, setCartCount] = useState(1);
-  const [wishlistCount, setWishlistCount] = useState(10);
 
   const getBadgeCount = (label: string) => {
     switch (label) {
       case "Cart":
         return cartCount;
       case "Wishlist":
-        return wishlistCount;
+        return wishlistCount ?? 0;
       default:
         return 0;
     }
@@ -118,14 +119,6 @@ const HomepageLayoutNavbar = () => {
                   {item.icon}
                 </NavbarItem>
               ))}
-
-              {/* <NavbarItem className="text-primary text-xs font-semibold px-4 border-r border-bordered cursor-pointer hover:text-success">
-                English ▼
-                <Select className="max-w-xs">
-                  <SelectItem key="english">English</SelectItem>
-                  <SelectItem key="french">French</SelectItem>
-                </Select>
-              </NavbarItem> */}
 
               <NavbarItem className="text-primary text-xs font-semibold border-r border-bordered">
                 <Select
@@ -310,7 +303,10 @@ const HomepageLayoutNavbar = () => {
                   <Badge
                     content={getBadgeCount(item.label)}
                     shape="circle"
-                    className="text-secondary bg-primary text-xs md:text-sm px-[4px] py-[2px] md:px-[6px] md:py-[3px]"
+                    // className="text-secondary bg-primary text-xs md:text-sm px-[4px] py-[2px] md:px-[6px] md:py-[3px]"
+                    classNames={{
+                      badge: "min-w-[24px] h-[24px] md:min-w-[28px] md:h-[28px] flex items-center justify-center text-secondary bg-primary text-xs md:text-sm font-semibold"
+                    }}
                     isInvisible={getBadgeCount(item.label) === 0}
                   >
                     {item.label === "Cart" ? (
