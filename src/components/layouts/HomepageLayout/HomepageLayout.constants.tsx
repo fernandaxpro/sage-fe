@@ -1,5 +1,49 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TbArrowRightToArc } from "react-icons/tb";
 import { Heart, ShoppingCart, User } from "lucide-react";
+import { FaBox } from "react-icons/fa6";
+import { ReactNode } from "react";
+
+export interface SubItem {
+  label: string;
+  href: string;
+  icon?: ReactNode;
+}
+
+export interface BrandItem {
+  name: string;
+  items: SubItem[];
+}
+
+export interface PopupContent {
+  brands?: BrandItem[];
+}
+
+export type PopupContentMap = {
+  [key: string]: PopupContent;
+};
+
+export const createItems = (labels: string[]): SubItem[] => {
+  return labels.map((label) => ({
+    label,
+    href: `/products/${label.toLowerCase().replace(/\s+/g, "-")}`,
+    icon: <FaBox className="w-5 h-5" />,
+  }));
+};
+
+export const convertCategoriesToPopupContent = (categories: any[]): PopupContent => {
+  const brands: BrandItem[] = categories.map((category) => ({
+    name: category.name,
+    items: category.children?.map((child: any) => ({
+      label: child.name,
+      href: `/product/list?category=${child.url_slug}`,
+      icon: <FaBox className="w-5 h-5" />,
+      url_logo: child.url_logo || "", 
+    })) || []
+  }));
+
+  return { brands };
+};
 
 const NAV_LINKS = [
   { label: "About", href: "/about" },
@@ -11,11 +55,11 @@ const NAV_LINKS = [
 ];
 
 const NAV_CATEGORIES = [
-  { label: "Products", href: "/product/list" },
+  { label: "Products" },
   { label: "Pre-Order", href: "/pre-order" },
   { label: "Pre-Own", href: "/pre-own" },
   { label: "Retro", href: "/retro" },
-  { label: "Shop", href: "/shop" },
+  { label: "Shop", href: "/product/list" },
   { label: "Membership", href: "/membership" },
   { label: "Repairs", href: "/repairs" },
   { label: "Blog", href: "/blog" },

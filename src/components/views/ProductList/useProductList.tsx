@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import productService from "@/services/product.service";
-import { ICategory, ISelectOption } from "@/types/Product";
+import { IBrand, ICategory, ISelectOption } from "@/types/Product";
 import { useQuery } from "@tanstack/react-query";
 
 interface UseProductListParams {
@@ -8,6 +8,7 @@ interface UseProductListParams {
   perPage: number;
   categoryIds?: number[];
   brandIds?: number[];
+  attribute_value?: string
 }
 
 const useProductList = ({
@@ -15,6 +16,7 @@ const useProductList = ({
   perPage,
   categoryIds,
   brandIds,
+  attribute_value
 }: UseProductListParams) => {
 
   const getProductList = async () => {
@@ -31,6 +33,10 @@ const useProductList = ({
       params.brand_ids = brandIds;
     }
 
+    if(attribute_value && attribute_value !== '') {
+      params.attribute_value = attribute_value
+    }
+
     const { data } = await productService.getProductList(params);
     return data;
   };
@@ -41,7 +47,7 @@ const useProductList = ({
     error,
     refetch: refetchProductList,
   } = useQuery({
-    queryKey: ["product-list", page, perPage, categoryIds, brandIds],
+    queryKey: ["product-list", page, perPage, categoryIds, brandIds, attribute_value],
     queryFn: getProductList,
   });
 
@@ -56,8 +62,36 @@ const useProductList = ({
     },
   });
 
+  const { data: dataBrands = [] } = useQuery({
+    queryKey: ['dataCategories'],
+    queryFn: async () => {
+      const res = await productService.getProductBrands({
+        page: 1,
+        perPage: 1000,
+      });
+      return res.data.data.map((item: IBrand): ISelectOption => ({
+        value: item.id,
+        label: item.name,
+      }));
+    },
+  });
+
+  const { data: dataAttributes = [] } = useQuery({
+    queryKey: ['dataAttributes'],
+    queryFn: async () => {
+      const res = await productService.getProductAttribute({
+        page: 1,
+        perPage: 1000,
+      });
+      return res.data.data;
+    },
+  });
+
   return {
     dataCategories,
+    dataBrands,
+    dataAttributes,
+
     productList,
     isLoadingProductList,
     error,

@@ -17,9 +17,42 @@ interface ICategory {
   children: ICategory[];
 }
 
+interface IBrand {
+  id: number;
+  name: string;
+  discount_percent: string; 
+  status: boolean;
+  meta_title: string | null;
+  meta_description: string | null;
+  url_logo: string | null;
+  url_banner: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+interface IAttributeSet {
+  id: number;
+  name: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface IAttribute {
+  id: number;
+  attribute_set_id: number;
+  name: string;
+  filterable: boolean;
+  values: string[];
+  created_at: string;
+  updated_at: string;
+  attribute_set: IAttributeSet;
+}
+
+
+
 interface ISelectOption {
-  value: number;
+  value: number | strng;
   label: string;
 }
 
-export type { ICategory, ISelectOption }
+export type { ICategory, ISelectOption, IBrand, IAttribute }

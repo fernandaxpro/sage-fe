@@ -4,6 +4,7 @@ export interface SubItem {
   label: string;
   href: string;
   icon?: ReactNode;
+   url_logo?: string; 
 }
 
 export interface BrandItem {
@@ -15,7 +16,7 @@ interface PopupContent {
   brands?: BrandItem[];
 }
 
-type PopupContentMap = {
+export type PopupContentMap = {
   [key: string]: PopupContent;
 };
 

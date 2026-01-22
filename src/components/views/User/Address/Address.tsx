@@ -2,10 +2,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Divider, Input } from "@heroui/react";
+import { Button, Divider } from "@heroui/react";
 import Container from "@/components/ui/Container";
 import UserSidebar from "@/components/views/User/UserSidebar/UserSidebar";
-import { FaSearch, FaPlus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import AddressModal from "./AddressModal/AddressModal";
 // import { dummyUser } from "@/data/users";
 import useAddress from "./useAddress";

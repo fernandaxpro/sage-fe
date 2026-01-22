@@ -43,12 +43,12 @@ const HomepageLayoutMobileSidebar = ({
         ? [{ label: "Wishlists", href: wishlistLink.href }, ...NAV_LINKS]
         : NAV_LINKS;
 
-     const handleMenuClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, label: string) => {
+    const handleMenuClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, label: string) => {
         const requiresAuth = ['Wishlists', 'Account', 'Cart'].includes(label);
-        
+
         if (status === 'unauthenticated' && requiresAuth) {
-            e.preventDefault(); 
-            onClose(); 
+            e.preventDefault();
+            onClose();
             onOpenLogin();
         } else {
             onClose();
@@ -129,7 +129,7 @@ const HomepageLayoutMobileSidebar = ({
                     <div>
                         <h3 className="text-gray-900 font-bold text-lg mb-4">Our Menu</h3>
                         <ul className="flex flex-col gap-3">
-                             {menuLinks.map((link: { label: string; href: string }) => (
+                            {menuLinks.map((link: { label: string; href: string }) => (
                                 <li key={link.label}>
                                     <Link
                                         href={link.href}
@@ -147,7 +147,7 @@ const HomepageLayoutMobileSidebar = ({
                     <div>
                         <h3 className="text-gray-900 font-bold text-lg mb-4">Our Products</h3>
                         <div className="flex flex-col">
-                            {NAV_CATEGORIES.map((category: { label: string; href: string }) => {
+                            {NAV_CATEGORIES.map((category: { label: string; href?: string }) => {
                                 const hasSubItems = POPUP_CONTENT[category.label]?.brands && POPUP_CONTENT[category.label]!.brands!.length > 0;
                                 const isExpanded = expandedCategory === category.label;
 
@@ -157,26 +157,31 @@ const HomepageLayoutMobileSidebar = ({
                                             className="flex items-center justify-between py-3 cursor-pointer group"
                                             onClick={() => hasSubItems ? toggleCategory(category.label) : null}
                                         >
-                                            <Link
-                                                href={category.href}
-                                                className="text-gray-700 group-hover:text-primary text-base font-medium flex-1"
-                                                onClick={(e) => {
-                                                    if (hasSubItems) {
-                                                        e.preventDefault(); // Prevent navigation if expanding
-                                                    } else {
-                                                        onClose();
-                                                    }
-                                                }}
-                                            >
-                                                {category.label}
-                                            </Link>
+                                            {category.href ? (
+                                                <Link
+                                                    href={category.href}
+                                                    className="text-gray-700 group-hover:text-primary text-base font-medium flex-1"
+                                                    onClick={(e) => {
+                                                        if (hasSubItems) {
+                                                            e.preventDefault(); // Prevent navigation if expanding
+                                                        } else {
+                                                            onClose();
+                                                        }
+                                                    }}
+                                                >
+                                                    {category.label}
+                                                </Link>
+                                            ) : (
+                                                <span className="text-gray-700 group-hover:text-primary text-base font-medium flex-1">
+                                                    {category.label}
+                                                </span>
+                                            )}
                                             {hasSubItems && (
                                                 <FaChevronDown
                                                     className={`w-3 h-3 text-primary transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
                                                 />
                                             )}
                                         </div>
-
                                         {/* Sub Items (Brands) */}
                                         {hasSubItems && isExpanded && (
                                             <div className="pl-4 pb-3 flex flex-col gap-2 bg-gray-50/50 rounded-lg mb-2">

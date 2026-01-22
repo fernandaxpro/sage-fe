@@ -2,9 +2,7 @@ const endpoint = {
     CUSTOMER: '/customer',
     ADMIN: '/admin',
 
-    ORDER_BY_ID: 'admin/sales/invoice',
-    REGISTER: 'customer/auth/register',
-    HOME_DATA: 'customer/sys',
+    SETTING: 'admin/setting/global',
 }
 
 export default endpoint;

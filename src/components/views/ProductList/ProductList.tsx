@@ -17,10 +17,6 @@ import {
     // PaginationSkeleton,
     // ControlsSkeleton
 } from './ProductListSkeleton';
-import {
-    brands,
-} from "@/data/products";
-
 import useProductList from "./useProductList";
 import FilterSidebar from "./FilterSidebar";
 import ProductCard from "./ProductCard";
@@ -28,41 +24,52 @@ import { breadcrumbItems, perPageOption, sortByOption } from "./ProductList.cons
 import AppBreadcrumbs from "@/components/ui/AppBreadcrumbs";
 
 const ProductList = () => {
-    const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-
-    const [priceRange, setPriceRange] = useState<number | number[]>([0, 50000]);
     const [viewMode, setViewMode] = useState<"list" | "grid-2" | "grid-3" | "grid-4">("grid-3");
     const [currentPage, setCurrentPage] = useState(1);
     const [perPage, setPerPage] = useState(100);
+
+    // Brands
+    const [selectedBrands, setSelectedBrands] = useState<number[]>([]);
     const [showAllBrands, setShowAllBrands] = useState(false);
+
+    // Attribute
+    const [selectedAttributes, setSelectedAttributes] = useState<string>('');
+
+    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+
+    const [priceRange, setPriceRange] = useState<number | number[]>([0, 50000]);
+
     const [showMobileFilter, setShowMobileFilter] = useState(false);
-    const visibleBrands = showAllBrands ? brands : brands.slice(0, 8);
 
     const {
-        dataCategories,
         productList,
         isLoadingProductList,
-        // error,
-        // refetchProductList,
+
+        dataCategories,
+        dataBrands,
+        dataAttributes,
     } = useProductList({
         page: currentPage,
         perPage,
         categoryIds: selectedCategories.length > 0 ? selectedCategories : undefined,
-        brandIds: undefined
+        brandIds: selectedBrands.length > 0 ? selectedBrands : undefined,
+         attribute_value: selectedAttributes
+
     })
+
+    const visibleBrands = showAllBrands ? dataBrands : dataBrands.slice(0, 8);
+
+    const handleBrandChange = (brandValue: number, checked: boolean) => {
+        if (checked) {
+            setSelectedBrands(prev => [...prev, brandValue]);
+        } else {
+            setSelectedBrands(prev => prev.filter(b => b !== brandValue));
+        }
+    };
 
     const handleCategoryChange = (categoryIds: number[]) => {
         setSelectedCategories(categoryIds);
-        setCurrentPage(1); // Reset ke page 1 saat filter berubah
-    };
-
-    const handleBrandChange = (brand: string, checked: boolean) => {
-        if (checked) {
-            setSelectedBrands([...selectedBrands, brand]);
-        } else {
-            setSelectedBrands(selectedBrands.filter((b) => b !== brand));
-        }
+        setCurrentPage(1); 
     };
 
     const handlePageChange = (page: number) => {
@@ -105,13 +112,20 @@ const ProductList = () => {
                             selectedCategories={selectedCategories}
                             onCategoryChange={handleCategoryChange}
 
-                            priceRange={priceRange}
-                            setPriceRange={setPriceRange}
+                            dataBrands={dataBrands}
                             selectedBrands={selectedBrands}
                             handleBrandChange={handleBrandChange}
                             showAllBrands={showAllBrands}
                             setShowAllBrands={setShowAllBrands}
                             visibleBrands={visibleBrands}
+
+                            dataAttributes={dataAttributes}
+                            selectedAttributes={selectedAttributes}
+                            setSelectedAttributes={setSelectedAttributes}
+
+                            priceRange={priceRange}
+                            setPriceRange={setPriceRange}
+
                             isMobile={true}
                             onClose={() => setShowMobileFilter(false)}
                         />
@@ -144,13 +158,19 @@ const ProductList = () => {
                                 selectedCategories={selectedCategories}
                                 onCategoryChange={handleCategoryChange}
 
-                                priceRange={priceRange}
-                                setPriceRange={setPriceRange}
+                                dataBrands={dataBrands}
                                 selectedBrands={selectedBrands}
                                 handleBrandChange={handleBrandChange}
                                 showAllBrands={showAllBrands}
                                 setShowAllBrands={setShowAllBrands}
                                 visibleBrands={visibleBrands}
+
+                                dataAttributes={dataAttributes}
+                                selectedAttributes={selectedAttributes}
+                                setSelectedAttributes={setSelectedAttributes}
+
+                                priceRange={priceRange}
+                                setPriceRange={setPriceRange}
                             />
                         </div>
                     </div>
@@ -169,7 +189,6 @@ const ProductList = () => {
                             </div>
                         </div> */}
 
-                        {/* View Mode & Sort Controls */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 border-t border-b border-bordered py-3 sm:py-4 gap-3 sm:gap-0">
                             <div className="flex items-center gap-2 sm:gap-4">
                                 <button

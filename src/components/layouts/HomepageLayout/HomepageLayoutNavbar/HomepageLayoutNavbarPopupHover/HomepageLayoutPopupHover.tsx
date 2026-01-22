@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { NAV_CATEGORIES } from "../../HomepageLayout.constants";
-import { POPUP_CONTENT } from "./HomepageLayoutPopupHover.constants";
+import { convertCategoriesToPopupContent, NAV_CATEGORIES } from "../../HomepageLayout.constants";
 import useHomepageLayoutPopupHover from "./useHomepageLayoutPopupHover";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import useHome from "@/hooks/useHome";
+import { useMemo } from "react";
+import { PopupContentMap } from "./HomepageLayoutPopupHover.constants";
 
 const HomepageLayoutNavbarPopupHover = () => {
   const {
@@ -14,6 +16,16 @@ const HomepageLayoutNavbarPopupHover = () => {
     scrollLeft,
     scrollRight,
   } = useHomepageLayoutPopupHover();
+
+  const { homeData } = useHome();
+
+  const dynamicPopupContent: PopupContentMap = useMemo(() => {
+    if (!homeData?.categories) return {} as PopupContentMap;
+
+    return {
+      "Products": convertCategoriesToPopupContent(homeData.categories)
+    };
+  }, [homeData?.categories]);
 
   return (
     <div className="relative" onMouseLeave={handleDelayedMouseLeave}>
@@ -39,13 +51,22 @@ const HomepageLayoutNavbarPopupHover = () => {
                 key={item.label}
                 className="flex items-center text-primary hover:text-success py-3 px-3 md:py-4 md:px-5 transition-colors duration-200 flex-shrink-0"
               >
-                <Link
-                  href={item.href}
-                  className="font-medium text-center text-sm md:text-base whitespace-nowrap"
-                  onMouseEnter={() => handleDelayedMouseEnter(item.label)}
-                >
-                  {item.label}
-                </Link>
+                {item.label === "Products" ? (
+                  <span
+                    className="font-medium text-center text-sm md:text-base whitespace-nowrap cursor-default"
+                    onMouseEnter={() => handleDelayedMouseEnter(item.label)}
+                  >
+                    {item.label}
+                  </span>
+                ) : (
+                  <Link
+                    href={item.href || "#"}
+                    className="font-medium text-center text-sm md:text-base whitespace-nowrap"
+                    onMouseEnter={() => handleDelayedMouseEnter(item.label)}
+                  >
+                    {item.label}
+                  </Link>
+                )}
               </div>
             ))}
           </div>
@@ -61,10 +82,16 @@ const HomepageLayoutNavbarPopupHover = () => {
         </button>
       </div>
 
-      {hoveredCategory && POPUP_CONTENT[hoveredCategory] && (
-        <div className="hidden lg:block absolute top-full w-full z-50 px-10">
-          <div className="max-w-standard mx-auto shadow-md bg-white rounded-br-[10px] rounded-bl-[10px]">
-            {renderPopupContent(hoveredCategory)}
+      {/* ✅ Fixed: Check dengan proper typing */}
+      {hoveredCategory && 
+       dynamicPopupContent[hoveredCategory] && 
+       dynamicPopupContent[hoveredCategory]?.brands && 
+       dynamicPopupContent[hoveredCategory]?.brands!.length > 0 && (
+        <div className="hidden lg:block absolute top-full left-0 right-0 z-50">
+          <div className="max-w-standard mx-auto px-4 md:px-10">
+            <div className="bg-white shadow-lg rounded-br-[10px] rounded-bl-[10px]">
+              {renderPopupContent(hoveredCategory, dynamicPopupContent)}
+            </div>
           </div>
         </div>
       )}

@@ -23,8 +23,6 @@ import {
   USER_ACTION_BUTTONS,
 } from "../HomepageLayout.constants";
 import Link from "next/link";
-// import Image from "next/image";
-// import { CiSearch } from "react-icons/ci";
 import useHomepageLayoutNavbar from "./useHomepageLayoutNavbar";
 import ModalAuth from "@/components/ui/ModalAuth";
 import ShoppingCart from "@/components/ui/ShoppingCart";
@@ -303,7 +301,6 @@ const HomepageLayoutNavbar = () => {
                   <Badge
                     content={getBadgeCount(item.label)}
                     shape="circle"
-                    // className="text-secondary bg-primary text-xs md:text-sm px-[4px] py-[2px] md:px-[6px] md:py-[3px]"
                     classNames={{
                       badge: "min-w-[24px] h-[24px] md:min-w-[28px] md:h-[28px] flex items-center justify-center text-secondary bg-primary text-xs md:text-sm font-semibold"
                     }}

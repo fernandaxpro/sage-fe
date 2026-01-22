@@ -23,7 +23,6 @@ const Home = () => {
   const {
     data: homeData,
     isLoading,
-    // error,
   } = useAppSelector((state) => state.home);
 
   const dummyBanners = [

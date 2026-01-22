@@ -1,4 +1,25 @@
 import { Facebook, Instagram, X } from "lucide-react";
+import { FaFacebookF, FaInstagram, FaTiktok, FaXTwitter } from "react-icons/fa6";
+
+const SOCIAL_CONFIG = [
+  {
+    key: "company.facebook",
+    icon: <FaFacebookF />,
+  },
+  {
+    key: "company.instagram",
+    icon: <FaInstagram />,
+  },
+  {
+    key: "company.x",
+    icon: <FaXTwitter />,
+  },
+  {
+    key: "company.tiktok",
+    icon: <FaTiktok />,
+  },
+];
+
 
 const FOOTER_INFO = {
   logo: {
@@ -80,4 +101,8 @@ const FOOTER_MENUS = [
   // },
 ];
 
-export { FOOTER_INFO, FOOTER_MENUS };
+export { 
+  SOCIAL_CONFIG,
+  FOOTER_INFO, 
+  FOOTER_MENUS 
+};
