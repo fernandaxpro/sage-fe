@@ -4,34 +4,10 @@ import { useState } from "react";
 import { Button, Checkbox, Image } from "@heroui/react";
 import Container from "@/components/ui/Container";
 import UserSidebar from "@/components/views/User/UserSidebar/UserSidebar";
-
-// Dummy Wishlist Data
-const initialWishlistItems = [
-    {
-        id: "w1",
-        name: "Shelly BUTTON 1 - Black SH-SHELLYBUTB",
-        image: "/images/products/button.png",
-        price: 45.27,
-        inStock: true,
-    },
-    {
-        id: "w2",
-        name: "HiLook 4 MP Network IR Turret Camera 2.8mm IPC-T240H",
-        image: "/images/products/camera.png",
-        price: 70.49,
-        inStock: true,
-    },
-    {
-        id: "w3",
-        name: "Dahua 21.5\" FHD Monitor DHI-LM22-H200",
-        image: "/images/products/monitor.png",
-        price: 227.05,
-        inStock: false,
-    }
-];
+import { useWishlist } from "@/hooks/useWishlist";
 
 const Wishlist = () => {
-    const [wishlistItems, setWishlistItems] = useState(initialWishlistItems);
+     const { wishlistItems } = useWishlist();
     const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
 
     // Toggle single item selection
@@ -50,7 +26,7 @@ const Wishlist = () => {
         if (selectedItems.size === wishlistItems.length) {
             setSelectedItems(new Set());
         } else {
-            const allIds = wishlistItems.map(item => item.id);
+            const allIds = wishlistItems.map((item: any) => item.id);
             setSelectedItems(new Set(allIds));
         }
     };
@@ -58,12 +34,7 @@ const Wishlist = () => {
     const isAllSelected = wishlistItems.length > 0 && selectedItems.size === wishlistItems.length;
     const isIndeterminate = selectedItems.size > 0 && selectedItems.size < wishlistItems.length;
 
-    const handleDelete = () => {
-        // Filter out selected items
-        const newItems = wishlistItems.filter(item => !selectedItems.has(item.id));
-        setWishlistItems(newItems);
-        setSelectedItems(new Set()); // Clear selection
-    };
+    const handleDelete = () => {};
 
     return (
         <Container className="flex-col md:flex-row gap-8 py-8 px-4 sm:px-6 lg:px-8">
@@ -99,7 +70,7 @@ const Wishlist = () => {
                 {/* Wishlist Items */}
                 <div className="flex flex-col gap-4">
                     {wishlistItems.length > 0 ? (
-                        wishlistItems.map((item) => (
+                        wishlistItems.map((item: any, index: number) => (
                             <div key={item.id} className="flex items-center gap-4 border border-[#E4E4E4] rounded-lg p-4 bg-white flex-wrap sm:flex-nowrap">
                                 <Checkbox
                                     isSelected={selectedItems.has(item.id)}
@@ -118,12 +89,12 @@ const Wishlist = () => {
 
                                 <div className="flex-1 min-w-[200px]">
                                     <h3 className="font-semibold text-gray-900 text-sm sm:text-base line-clamp-2">
-                                        {item.name}
+                                        {item?.product?.name}
                                     </h3>
                                 </div>
 
                                 <div className="w-full sm:w-24 text-right sm:text-left font-bold text-gray-900">
-                                    ${item.price.toFixed(2)}
+                                    ${item?.product?.recommended_retail_price}
                                 </div>
 
                                 <div className="w-full sm:w-28 text-sm">

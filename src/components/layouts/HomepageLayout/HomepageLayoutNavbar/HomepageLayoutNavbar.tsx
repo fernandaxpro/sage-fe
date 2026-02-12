@@ -35,10 +35,15 @@ import { Search } from "lucide-react";
 import { useRouter } from "next/router";
 import { SOCIAL_LINKS } from "./HomePageLayoutNavbar.constants";
 import { useWishlist } from "@/hooks/useWishlist";
+import useSetting from "@/hooks/useSetting";
 
 const HomepageLayoutNavbar = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const {
+    settingsMap,
+    isLoadingGlobalSetting
+  } = useSetting();
   const {
     dataProfile,
 
@@ -107,16 +112,20 @@ const HomepageLayoutNavbar = () => {
                 </NavbarItem>
               ))}
 
-              {SOCIAL_LINKS.map((item, index) => (
-                <NavbarItem
-                  as={Link}
-                  href={item.href}
-                  key={`social-${index}`}
-                  className="text-primary hover:text-success text-xs font-semibold px-3 border-r border-bordered last:border-r-0"
-                >
-                  {item.icon}
-                </NavbarItem>
-              ))}
+              {SOCIAL_LINKS.map((item: any, index: number) => {
+                const href = settingsMap?.[item?.key]; 
+                if (!href) return null;
+                return (
+                  <NavbarItem
+                    as={Link}
+                    href={href}
+                    key={`social-${index}`}
+                    className="text-primary hover:text-success text-xs font-semibold px-3 border-r border-bordered last:border-r-0"
+                  >
+                    {item.icon}
+                  </NavbarItem>
+                )
+              })}
 
               <NavbarItem className="text-primary text-xs font-semibold border-r border-bordered">
                 <Select

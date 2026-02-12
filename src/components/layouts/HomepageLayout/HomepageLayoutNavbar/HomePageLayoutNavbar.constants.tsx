@@ -1,17 +1,21 @@
-import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
+import { FaFacebookF, FaInstagram, FaTiktok, FaXTwitter } from "react-icons/fa6";
 
 const SOCIAL_LINKS = [
   {
     icon: <FaFacebookF size={16} className="text-xs font-medium" />,
-    href: "#",
+    key: "company.facebook",
   },
   {
     icon: <FaInstagram size={16} className="text-xs font-medium" />,
-    href: "#",
+    key: "company.instagram",
   },
   {
     icon: <FaXTwitter size={16} className="text-xs font-medium" />,
-    href: "#",
+    key: "company.x",
+  },
+  {
+    icon: <FaTiktok size={16} className="text-xs font-medium" />,
+    key: "company.tiktok",
   },
 ];
 

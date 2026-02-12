@@ -4,10 +4,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import wishlistService from "@/services/wishlist.service";
 import { ToasterContext } from "@/contexts/ToasterContext";
 import { useContext } from "react";
+import { useSession } from "next-auth/react";
 
 export const useWishlist = () => {
   const { setToaster } = useContext(ToasterContext);
   const queryClient = useQueryClient();
+  const { status } = useSession();
 
   const {
     data: wishlistData,
@@ -20,6 +22,7 @@ export const useWishlist = () => {
       return response.data;
     },
     staleTime: 5 * 60 * 1000,
+    enabled: status === 'authenticated'
   });
 
   const addMutation = useMutation({
