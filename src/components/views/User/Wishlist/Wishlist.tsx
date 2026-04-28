@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button, Checkbox, Image } from "@heroui/react";
 import Container from "@/components/ui/Container";
 import UserSidebar from "@/components/views/User/UserSidebar/UserSidebar";
-import { useWishlist } from "@/hooks/useWishlist";
+import { useWishlist, WishlistItem } from "@/hooks/useWishlist";
 
 const Wishlist = () => {
      const { wishlistItems } = useWishlist();
@@ -26,7 +26,7 @@ const Wishlist = () => {
         if (selectedItems.size === wishlistItems.length) {
             setSelectedItems(new Set());
         } else {
-            const allIds = wishlistItems.map((item: any) => item.id);
+            const allIds = wishlistItems.map((item: WishlistItem) => item.id);
             setSelectedItems(new Set(allIds));
         }
     };
@@ -70,7 +70,7 @@ const Wishlist = () => {
                 {/* Wishlist Items */}
                 <div className="flex flex-col gap-4">
                     {wishlistItems.length > 0 ? (
-                        wishlistItems.map((item: any, index: number) => (
+                        wishlistItems.map((item: WishlistItem) => (
                             <div key={item.id} className="flex items-center gap-4 border border-[#E4E4E4] rounded-lg p-4 bg-white flex-wrap sm:flex-nowrap">
                                 <Checkbox
                                     isSelected={selectedItems.has(item.id)}

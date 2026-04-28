@@ -1,10 +1,29 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/hooks/useWishlist.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import wishlistService from "@/services/wishlist.service";
 import { ToasterContext } from "@/contexts/ToasterContext";
 import { useContext } from "react";
 import { useSession } from "next-auth/react";
+
+export interface WishlistProduct {
+  id: string;
+  name: string;
+  recommended_retail_price: number;
+}
+
+export interface WishlistItem {
+  id: string;
+  product_id: string;
+  image: string;
+  name: string;
+  inStock: boolean;
+  product: WishlistProduct;
+}
+
+export interface WishlistData {
+  data: WishlistItem[];
+  count: number;
+}
 
 export const useWishlist = () => {
   const { setToaster } = useContext(ToasterContext);
@@ -22,7 +41,7 @@ export const useWishlist = () => {
       return response.data;
     },
     staleTime: 5 * 60 * 1000,
-    enabled: status === 'authenticated'
+    enabled: status === "authenticated",
   });
 
   const addMutation = useMutation({
@@ -32,14 +51,14 @@ export const useWishlist = () => {
 
       const previousWishlist = queryClient.getQueryData(["wishlist"]);
 
-      queryClient.setQueryData(["wishlist"], (old: any) => ({
+      queryClient.setQueryData(["wishlist"], (old: WishlistData) => ({
         ...old,
         data: [...(old?.data || []), { product_id: productId }],
       }));
 
       return { previousWishlist };
     },
-    onError: (err, productId, context) => {
+    onError: (_err, _productId, context) => {
       queryClient.setQueryData(["wishlist"], context?.previousWishlist);
       setToaster({
         type: "error",
@@ -62,19 +81,20 @@ export const useWishlist = () => {
       wishlistService.deleteWishlist(productId),
     onMutate: async (productId) => {
       await queryClient.cancelQueries({ queryKey: ["wishlist"] });
+
       const previousWishlist = queryClient.getQueryData(["wishlist"]);
 
-      queryClient.setQueryData(["wishlist"], (old: any) => ({
+      queryClient.setQueryData(["wishlist"], (old: WishlistData) => ({
         ...old,
         data:
           old?.data?.filter(
-            (item: any) => String(item.product_id) !== productId,
+            (item: WishlistItem) => String(item.product_id) !== productId,
           ) || [],
       }));
 
       return { previousWishlist };
     },
-    onError: (err, productId, context) => {
+    onError: (_err, _productId, context) => {
       queryClient.setQueryData(["wishlist"], context?.previousWishlist);
       setToaster({
         type: "error",
@@ -107,6 +127,6 @@ export const useWishlist = () => {
 export const useIsInWishlist = (productId: string) => {
   const { wishlistItems } = useWishlist();
   return wishlistItems.some(
-    (item: any) => String(item.product_id) === productId,
+    (item: WishlistItem) => String(item.product_id) === productId,
   );
 };

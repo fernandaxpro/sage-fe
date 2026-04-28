@@ -112,7 +112,7 @@ const HomepageLayoutNavbar = () => {
                 </NavbarItem>
               ))}
 
-              {SOCIAL_LINKS.map((item: any, index: number) => {
+              {SOCIAL_LINKS.map((item, index) => {
                 const href = settingsMap?.[item?.key]; 
                 if (!href) return null;
                 return (
