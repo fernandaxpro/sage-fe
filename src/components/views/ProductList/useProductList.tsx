@@ -2,6 +2,7 @@
 import productService from "@/services/product.service";
 import { IBrand, ICategory, ISelectOption } from "@/types/Product";
 import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 
 interface UseProductListParams {
   page: number;
@@ -18,7 +19,7 @@ const useProductList = ({
   brandIds,
   attribute_value
 }: UseProductListParams) => {
-
+  const { data: session } = useSession();
   const getProductList = async () => {
     const params: any = {
       page,
@@ -60,6 +61,7 @@ const useProductList = ({
         label: item.name,
       }));
     },
+     enabled: !!session,
   });
 
   const { data: dataBrands = [] } = useQuery({
@@ -74,6 +76,7 @@ const useProductList = ({
         label: item.name,
       }));
     },
+    enabled: !!session,
   });
 
   const { data: dataAttributes = [] } = useQuery({
@@ -85,6 +88,7 @@ const useProductList = ({
       });
       return res.data.data;
     },
+    enabled: !!session,
   });
 
   return {

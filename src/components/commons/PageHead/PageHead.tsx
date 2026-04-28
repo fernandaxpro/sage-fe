@@ -14,7 +14,7 @@ const PageHead = (props: PropTypes) => {
             <title>{title} | Sage Gaming</title>
             <link
                 rel="icon"
-                href="/images/general/favicon.ico"
+                href="/sage-logo.png"
                 type='image/x-icon'
             />
         </Head>

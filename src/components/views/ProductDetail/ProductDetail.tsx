@@ -35,21 +35,13 @@ const ProductDetail = ({
   const [selectedImage, setSelectedImage] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState(0);
-  const [selectedSize, setSelectedSize] = useState("S");
+  // const [selectedColor, setSelectedColor] = useState(0);
+  // const [selectedSize, setSelectedSize] = useState("S");
   const { productData, isLoadingProduct } = useProductDetail();
 
   const handleQuantityChange = (delta: number) => {
     setQuantity(Math.max(1, quantity + delta));
   };
-
-  const colors = [
-    { name: "Navy", value: "#1E3A8A" },
-    { name: "Gray", value: "#6B7280" },
-    { name: "Orange", value: "#F97316" },
-  ];
-
-  const sizes = ["S", "M", "L"];
 
   if (isLoadingProduct || !productData) {
     return <ProductDetailSkeleton />;
@@ -276,53 +268,6 @@ const ProductDetail = ({
                 >
                   Only 3 left In Stock
                 </Chip>
-              </div>
-
-              {/* Price */}
-              <h1 className="text-4xl font-bold text-primary">
-                ${productData?.recommended_retail_price}
-              </h1>
-
-              {/* Color Selection */}
-              <div className="flex flex-col gap-3">
-                <p className="text-sm font-bold text-primary">
-                  Color:
-                </p>
-                <div className="flex gap-2">
-                  {colors.map((color, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedColor(index)}
-                      className={`w-8 h-8 rounded-full border-2 transition-all ${selectedColor === index
-                        ? "border-white scale-110"
-                        : "border-bordered"
-                        }`}
-                      style={{ backgroundColor: color.value }}
-                      aria-label={`Select ${color.name} color`}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Size Selection */}
-              <div className="flex flex-col gap-3">
-                <p className="text-sm font-bold text-primary">
-                  Sizes:
-                </p>
-                <div className="flex gap-3">
-                  {sizes.map((size) => (
-                    <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`w-12 h-10 rounded-full border-2 font-semibold text-sm transition-all ${selectedSize === size
-                        ? "border-primary bg-secondary text-primary"
-                        : "border-bordered bg-transparent text- hover:border-primary"
-                        }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
               </div>
 
               {/* Quantity Selection */}
