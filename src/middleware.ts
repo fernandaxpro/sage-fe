@@ -5,12 +5,20 @@ import { getToken } from "next-auth/jwt";
 import environtment from "./config/environtment";
 
 export async function middleware(request: NextRequest) {
+    const { pathname } = request.nextUrl;
+
+    const isMaintenanceMode = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
+    if (isMaintenanceMode && pathname !== "/maintenance") {
+        return NextResponse.redirect(new URL("/maintenance", request.url));
+    }
+    if (!isMaintenanceMode && pathname === "/maintenance") {
+        return NextResponse.redirect(new URL("/", request.url));
+    }
+
     const token: JWTExtended | null = await getToken({
         req: request,
         secret: environtment.AUTH_SECRET
     });
-    
-    const { pathname } = request.nextUrl;
     
     // const protectedRoutes = ["/user/profile", "/user/wishlist"];
     const protectedRoutes = ["/user"];
@@ -34,7 +42,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        "/auth/:path*", 
+        "/auth/:path*",
         "/user/:path*",
+        "/((?!_next/static|_next/image|favicon.ico|maintenance-bg.jpg|sage-logo.png).*)",
     ]
 }
