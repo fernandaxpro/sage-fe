@@ -164,7 +164,7 @@ export default function MaintenancePromotionPage() {
           </p>
 
           {/* Price */}
-          <p style={{ fontFamily:"'Inter', sans-serif", fontWeight:700, fontSize:"20px", lineHeight:"100%", color:"#FFFFFF", marginBottom:12 }}>
+          <p style={{ fontFamily:"'Inter', sans-serif", fontWeight:700, fontSize:"36px", lineHeight:"100%", color:"#FFFFFF", letterSpacing:0, marginBottom:12 }}>
             Only $116.00
           </p>
 
@@ -216,7 +216,7 @@ export default function MaintenancePromotionPage() {
       {/* ── z=5  Footer ── */}
       <div style={{ position:"absolute", bottom:FOOTER_PB, left: cfg.px, zIndex:5 }}>
         <p style={{ fontFamily:"'Inter', sans-serif", fontWeight:400, fontSize:"16px", color:"#FFFFFF" }}>
-          Powered by <span style={{ fontWeight:700 }}>Xpro Group</span>
+          Powered by <a href="https://xprogroup.com.au/" target="_blank" rel="noopener noreferrer" style={{ fontWeight:700, color:"#FFFFFF", textDecoration:"none" }}>Xpro Group</a>
         </p>
       </div>
 
