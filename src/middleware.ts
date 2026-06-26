@@ -8,11 +8,22 @@ export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     const isMaintenanceMode = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
-    if (isMaintenanceMode && pathname !== "/maintenance") {
-        return NextResponse.redirect(new URL("/maintenance", request.url));
+    const maintenanceType = process.env.NEXT_PUBLIC_MAINTENANCE_TYPE || "default";
+    const maintenancePage = maintenanceType === "promotion" ? "/maintenance-promotion" : "/maintenance";
+    const maintenanceExcluded = ["/maintenance", "/maintenance-promotion"];
+
+    if (isMaintenanceMode && !maintenanceExcluded.includes(pathname)) {
+        return NextResponse.redirect(new URL(maintenancePage, request.url));
     }
-    if (!isMaintenanceMode && pathname === "/maintenance") {
+
+    // Redirect away from maintenance pages when mode is off
+    if (!isMaintenanceMode && maintenanceExcluded.includes(pathname)) {
         return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    // When mode is on, redirect to the correct maintenance page if user lands on the wrong one
+    if (isMaintenanceMode && maintenanceExcluded.includes(pathname) && pathname !== maintenancePage) {
+        return NextResponse.redirect(new URL(maintenancePage, request.url));
     }
 
     const token: JWTExtended | null = await getToken({
@@ -44,6 +55,6 @@ export const config = {
     matcher: [
         "/auth/:path*",
         "/user/:path*",
-        "/((?!_next/static|_next/image|favicon.ico|maintenance-bg.jpg|sage-logo.png).*)",
+        "/((?!_next/static|_next/image|favicon.ico|maintenance-bg\\.jpg|maintenance-bg\\.png|sage-logo\\.png|background/).*)",
     ]
 }

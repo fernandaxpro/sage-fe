@@ -9,7 +9,7 @@ export default function MaintenancePage() {
     <div
       className="relative min-h-screen w-full flex flex-col"
       style={{
-        backgroundImage: "url('/maintenance-bg.jpg')",
+        backgroundImage: "url('/maintenance-bg.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
