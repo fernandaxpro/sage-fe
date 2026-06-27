@@ -4,7 +4,7 @@ import { Mail, Phone } from "lucide-react";
 import { RiFacebookFill } from "react-icons/ri";
 import { BsTwitterX } from "react-icons/bs";
 import { BiLogoTiktok } from "react-icons/bi";
-import { FaWhatsapp } from "react-icons/fa";
+import { PiShoppingCart } from "react-icons/pi";
 
 const BG_IMAGES = [
   "/background/pic-1.jpeg",
@@ -170,10 +170,10 @@ export default function MaintenancePromotionPage() {
 
           {/* Button */}
           <div className="promo-btn-wrap">
-            <a href={`https://wa.me/61451747228?text=${encodeURIComponent("Hi Sage Gaming Team,\n\nI'd like to place an order for GTA 6.\n\nProduct: GTA 6\nPrice: USD $116.00\n\nPlease let me know the next steps to complete my purchase.\n\nThank you!")}`} target="_blank" rel="noopener noreferrer"
+            <a href="https://square.link/u/eDsnAgwS" target="_blank" rel="noopener noreferrer"
               style={{ display:"inline-flex", alignItems:"center", gap:8, backgroundColor:"#FFFFFF", borderRadius:6, padding:"10px 12px", textDecoration:"none" }}>
-              <FaWhatsapp size={18} color="#103178" />
-              <span style={{ fontFamily:"'Plus Jakarta Sans', sans-serif", fontWeight:600, fontSize:"16px", lineHeight:"100%", color:"#103178" }}>Order Here</span>
+              <PiShoppingCart size={18} color="#103178" />
+              <span style={{ fontFamily:"'Plus Jakarta Sans', sans-serif", fontWeight:600, fontSize:"16px", lineHeight:"100%", letterSpacing:0, color:"#103178" }}>Pre Order Now</span>
             </a>
           </div>
 
