@@ -170,7 +170,7 @@ export default function MaintenancePromotionPage() {
 
           {/* Button */}
           <div className="promo-btn-wrap">
-            <a href="https://wa.me/61451747228" target="_blank" rel="noopener noreferrer"
+            <a href={`https://wa.me/61451747228?text=${encodeURIComponent("Hi Sage Gaming Team,\n\nI'd like to place an order for GTA 6.\n\nProduct: GTA 6\nPrice: USD $116.00\n\nPlease let me know the next steps to complete my purchase.\n\nThank you!")}`} target="_blank" rel="noopener noreferrer"
               style={{ display:"inline-flex", alignItems:"center", gap:8, backgroundColor:"#FFFFFF", borderRadius:6, padding:"10px 12px", textDecoration:"none" }}>
               <FaWhatsapp size={18} color="#103178" />
               <span style={{ fontFamily:"'Plus Jakarta Sans', sans-serif", fontWeight:600, fontSize:"16px", lineHeight:"100%", color:"#103178" }}>Order Here</span>
