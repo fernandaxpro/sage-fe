@@ -55,6 +55,6 @@ export const config = {
     matcher: [
         "/auth/:path*",
         "/user/:path*",
-        "/((?!_next/static|_next/image|favicon.ico|maintenance-bg\\.jpg|maintenance-bg\\.png|sage-logo\\.png|background/).*)",
+        "/((?!_next/static|_next/image|favicon.ico|maintenance-bg\\.jpg|maintenance-bg\\.png|sage-logo\\.png|gta6-boxart\\.png|background/).*)",
     ]
 }

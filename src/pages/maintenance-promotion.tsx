@@ -7,7 +7,7 @@ import { BiLogoTiktok } from "react-icons/bi";
 import { PiShoppingCart } from "react-icons/pi";
 
 const BG_IMAGES = [
-  "/background/pic-1.jpeg",
+  "/background/pic-1-flip.jpeg",
   "/background/pic-2.jpeg",
   "/background/pic-3.jpeg",
   "/background/pic-4.jpeg",
@@ -130,6 +130,12 @@ export default function MaintenancePromotionPage() {
       {/* ── z=4  Left gradient — on top of slider ── */}
       <div style={{ position:"absolute", inset:0, background:"linear-gradient(to right, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.88) 18%, rgba(0,0,0,0.55) 38%, rgba(0,0,0,0.12) 56%, transparent 72%)", zIndex:4, pointerEvents:"none" }} />
 
+      {/* ── z=5  GTA VI Box Art (top-right) ── */}
+      <div style={{ position:"absolute", top:16, right:16, zIndex:5 }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/gta6-boxart.png" alt="GTA VI PS5 Box Art" className="promo-popup-img" style={{ display:"block", objectFit:"contain" }} />
+      </div>
+
       {/* ── z=5  Logo ── */}
       <div className="promo-logo-wrap" style={{ position:"absolute", top:0, left:0, display:"flex", alignItems:"center", gap:10, zIndex:5 }}>
         <Image src="/sage-logo.png" alt="Sage Gaming Logo" width={38} height={44} style={{ objectFit:"contain" }} className="promo-logo-img" />
@@ -221,6 +227,11 @@ export default function MaintenancePromotionPage() {
       </div>
 
       <style jsx global>{`
+        /* ─── GTA VI Popup Box Art ─── */
+        .promo-popup-img { width: 130px; height: auto; }
+        @media (min-width: 640px)  { .promo-popup-img { width: 170px; } }
+        @media (min-width: 1024px) { .promo-popup-img { width: 210px; } }
+
         /* ─── Logo ─── */
         .promo-logo-wrap  { padding: 16px 20px; }
         .promo-logo-img   { width: 30px !important; height: 35px !important; }
