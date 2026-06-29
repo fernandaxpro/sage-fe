@@ -228,9 +228,9 @@ export default function MaintenancePromotionPage() {
 
       <style jsx global>{`
         /* ─── GTA VI Popup Box Art ─── */
-        .promo-popup-img { width: 130px; height: auto; }
-        @media (min-width: 640px)  { .promo-popup-img { width: 170px; } }
-        @media (min-width: 1024px) { .promo-popup-img { width: 210px; } }
+        .promo-popup-img { width: 160px; height: auto; }
+        @media (min-width: 640px)  { .promo-popup-img { width: 210px; } }
+        @media (min-width: 1024px) { .promo-popup-img { width: 266px; height: 335px; } }
 
         /* ─── Logo ─── */
         .promo-logo-wrap  { padding: 16px 20px; }
